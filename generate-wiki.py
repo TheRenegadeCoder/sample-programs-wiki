@@ -1,12 +1,13 @@
 import os
+import sys
 import pathlib
 import urllib.request
 from typing import List
 
 
 class Repo:
-    def __init__(self):
-        self.source_dir: str = os.path.join("..", "archive")
+    def __init__(self, source_dir):
+        self.source_dir: str = source_dir
         self.languages: List[Language] = list()
         self.total_snippets: int = 0
 
@@ -61,8 +62,9 @@ class Language:
 
 
 class Wiki:
-    def __init__(self):
+    def __init__(self, source_dir):
         self.repo: Repo = None
+        self.source_dir = source_dir
         self.wiki_url_base: str = "/jrg94/sample-programs/wiki/"
         self.repo_url_base: str = "/jrg94/sample-programs/tree/master/archive/"
         self.tag_url_base: str = "https://therenegadecoder.com/tag/"
@@ -104,7 +106,7 @@ class Wiki:
         return self._build_link("Here", self.issue_url_base + lang_query)
 
     def build_wiki(self):
-        self.repo = Repo()
+        self.repo = Repo(self.source_dir)
         self.repo.analyze_repo()
         self.build_alphabet_catalog()
         self.build_alphabet_pages()
@@ -200,5 +202,8 @@ class Page:
 
 
 if __name__ == '__main__':
-    wiki = Wiki()
-    wiki.build_wiki()
+    if len(sys.argv) > 1:
+        wiki = Wiki(sys.argv[1])
+        wiki.build_wiki()
+    else:
+        print("Please supply an input path")
