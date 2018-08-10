@@ -65,10 +65,10 @@ class Wiki:
     def __init__(self, source_dir):
         self.repo: Repo = None
         self.source_dir = source_dir
-        self.wiki_url_base: str = "/jrg94/sample-programs/wiki/"
-        self.repo_url_base: str = "/jrg94/sample-programs/tree/master/archive/"
+        self.wiki_url_base: str = "/TheRenegadeCoder/sample-programs/wiki/"
+        self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/master/archive/"
         self.tag_url_base: str = "https://therenegadecoder.com/tag/"
-        self.issue_url_base: str = "/jrg94/sample-programs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
+        self.issue_url_base: str = "/TheRenegadeCoder/sample-programs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
         self.pages: List[Page] = list()
 
     @staticmethod
