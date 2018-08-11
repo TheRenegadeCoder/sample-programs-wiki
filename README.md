@@ -14,8 +14,11 @@ generate various wiki pages in Markdown.
 
 ## What is Automated
 
-Currently, the script generates 27 pages: one alphabet catalog and 26 alphabet pages. The alphabet
-catalog contains a table with links to each alphabet page as well as meta data like the number
-of scripts and languages per letter as well as the totals for the entire repo. Each alphabet page
-contains a table which lists each language for that particular letter as well as meta data
+Currently, the script generates 27 pages: 1 alphabet catalog and 26 alphabet pages. 
+
+The alphabet catalog contains a table with links to each alphabet page as well as meta data like the number
+of scripts and languages per letter. In addition, the alphabet catalog contains the total number of scripts
+and languages for the entire repo. 
+
+Each alphabet page contains a table which lists each language for that particular letter as well as meta data
 like the number of scripts per language and links to articles and issues.
