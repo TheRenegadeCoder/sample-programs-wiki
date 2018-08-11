@@ -146,7 +146,7 @@ class Wiki:
 
     def build_alphabet_page(self, letter):
         page = Page(letter.capitalize())
-        introduction = """The following table contains all the existing languages 
+        introduction = """The following table contains all the existing languages
                     in the repository that start with the letter %s:""" % letter.capitalize()
         page.add_row(introduction)
         page.add_section_break()
@@ -200,10 +200,12 @@ class Page:
         output_file.write(self._build_page())
         output_file.close()
 
-
-if __name__ == '__main__':
+def main():
     if len(sys.argv) > 1:
         wiki = Wiki(sys.argv[1])
         wiki.build_wiki()
     else:
         print("Please supply an input path")
+
+if __name__ == '__main__':
+    main()
