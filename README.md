@@ -8,7 +8,7 @@ If you would like to propose a change, feel free to leverage the issues tab or m
 
 ## How It Works
 
-The `generate-wiki.py` script works by analyzing the information in the Sample Programs
+The `generate_wiki.py` script works by analyzing the information in the Sample Programs
 repository and storing that information in objects. These objects are then used to
 generate various wiki pages in Markdown. 
 
@@ -30,7 +30,7 @@ you'll need a copy of the Sample Programs repo:
 
 `git clone https://github.com/TheRenegadeCoder/sample-programs.git`
 
-Then, you'll want to run the `generate-wiki.py` script as follows:
+Then, you'll want to run the `generate_wiki.py` script as follows:
 
 `python generate-wiki.py /path/to/sample-programs/repo/archive`
 
