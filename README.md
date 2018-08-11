@@ -34,7 +34,7 @@ Then, you'll want to run the `generate-wiki.py` script as follows:
 
 `python generate-wiki.py /path/to/sample-programs/repo/archive`
 
-The solution is designed to then handle repo exploration from the archive folder. If successful, you should
+The solution is designed to then handle repo exploration from the `/archive/` directory. If successful, you should
 begin to see print statements for the various links under test for The Renegade Coder. When finished, you'll
 have a `/wiki/` directory next to your script which contains the wiki.
 
