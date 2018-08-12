@@ -4,15 +4,14 @@ python:
 
 script:
   - echo "Hello, World!"
+  # TODO: add tests
 
 deploy:
   provider: pypi
   user: ${PYPI_USERNAME}
   password: ${PYPI_PASSWORD}
   on:
-    branch: pypi-deployment
-#  on:
-#    tags: true
+    tags: true
 
 notifications:
   email: false
