@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="generate_wiki",
-    version="1.0.1",
+    version="1.0.2",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
     description="A wiki generation package for the Sample Programs repo",
