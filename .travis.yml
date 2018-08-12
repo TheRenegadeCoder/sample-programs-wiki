@@ -2,6 +2,9 @@ language: python
 python:
   - "3.6"
 
+script:
+  - echo "Hello, World!"
+
 deploy:
   provider: pypi
   user: ${PYPI_USERNAME}
