@@ -152,11 +152,14 @@ class Wiki:
         page.add_section_break()
         page.add_table_header("Language", "Article(s)", "Issue(s)", "# of Snippets")
         languages_by_letter = self.repo.get_languages_by_letter(letter)
+        total_snippets = 0
         for language in languages_by_letter:
+            total_snippets += language.total_snippets
             language_link = self.build_repo_link(language.name.capitalize(), letter, language.name)
             tag_link = self.build_tag_link(language.name)
             issues_link = self.build_issue_link(language.name)
             page.add_table_row(language_link, tag_link, issues_link, str(language.total_snippets))
+        page.add_table_row("**Totals**", "", "", str(total_snippets))
         page.add_section_break()
         return page
 
