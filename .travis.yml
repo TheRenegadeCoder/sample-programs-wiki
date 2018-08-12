@@ -6,8 +6,8 @@ deploy:
   provider: pypi
   user: ${PYPI_USERNAME}
   password: ${PYPI_PASSWORD}
-  on:
-    tags: true
+#  on:
+#    tags: true
 
 notifications:
   email: false
