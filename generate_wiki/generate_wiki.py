@@ -116,9 +116,13 @@ class Wiki:
         for page in self.pages:
             page.output_page()
 
+    def get_sorted_letters(self):
+        unsorted_letters = os.listdir(self.repo.source_dir)
+        return sorted(unsorted_letters, key = lambda s: s.casefold())
+
     def build_alphabet_catalog(self):
         page = Page("Alphabetical Language Catalog")
-        alphabetical_list = os.listdir(self.repo.source_dir)
+        alphabetical_list = self.get_sorted_letters()
         page.add_table_header("Collection", "# of Languages", "# of Snippets")
         for letter in alphabetical_list:
             letter_link = self.build_wiki_link(letter.capitalize(), letter.capitalize())
@@ -130,7 +134,7 @@ class Wiki:
         self.pages.append(page)
 
     def build_alphabet_pages(self):
-        alphabetical_list = os.listdir(self.repo.source_dir)
+        alphabetical_list = self.get_sorted_letters()
         for index, letter in enumerate(alphabetical_list):
             page = self.build_alphabet_page(letter)
             previous_index = index - 1
