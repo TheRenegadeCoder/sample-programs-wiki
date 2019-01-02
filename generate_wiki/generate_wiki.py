@@ -27,7 +27,7 @@ class Repo:
 
     def get_languages_by_letter(self, letter):
         language_list = [language for language in self.languages if language.name.startswith(letter)]
-        return language_list
+        return sorted(language_list, key = lambda s: s.casefold())
 
 
 class Language:
