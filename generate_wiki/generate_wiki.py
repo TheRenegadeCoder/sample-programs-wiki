@@ -27,7 +27,7 @@ class Repo:
 
     def get_languages_by_letter(self, letter):
         language_list = [language for language in self.languages if language.name.startswith(letter)]
-        return sorted(language_list, key = lambda s: s.name.casefold())
+        return sorted(language_list, key=lambda s: s.name.casefold())
 
 
 class Language:
@@ -45,11 +45,14 @@ class Language:
         self.compute_total_snippets()
         self.computer_total_dir_size()
 
+    def get_test_file_path(self):
+        return next((file for file in self.file_list if os.path.splitext(file)[1] == ".yml"), None)
+
     def compute_total_snippets(self):
         count = 0
         for file in self.file_list:
             file_name, file_ext = os.path.splitext(file)
-            if file_ext not in (".md", ""):
+            if file_ext not in (".md", "", ".yml"):
                 count += 1
         self.total_snippets = count
 
@@ -105,6 +108,15 @@ class Wiki:
         lang_query = language.replace("-", "+")
         return self._build_link("Here", self.issue_url_base + lang_query)
 
+    def build_test_link(self, language: Language, letter: str):
+        file_name = language.get_test_file_path()
+        if file_name:
+            file_path = self.repo_url_base + letter + "/" + language.name + "/" + file_name
+            file_path_link = self._build_link("Here", file_path)
+        else:
+            file_path_link = ""
+        return file_path_link
+
     def build_wiki(self):
         self.repo = Repo(self.source_dir)
         self.repo.analyze_repo()
@@ -118,7 +130,7 @@ class Wiki:
 
     def get_sorted_letters(self):
         unsorted_letters = os.listdir(self.repo.source_dir)
-        return sorted(unsorted_letters, key = lambda s: s.casefold())
+        return sorted(unsorted_letters, key=lambda s: s.casefold())
 
     def build_alphabet_catalog(self):
         page = Page("Alphabetical Language Catalog")
@@ -154,7 +166,7 @@ class Wiki:
                     in the repository that start with the letter %s:""" % letter.capitalize()
         page.add_row(introduction)
         page.add_section_break()
-        page.add_table_header("Language", "Article(s)", "Issue(s)", "# of Snippets")
+        page.add_table_header("Language", "Article(s)", "Issue(s)", "Test(s)", "# of Snippets")
         languages_by_letter = self.repo.get_languages_by_letter(letter)
         total_snippets = 0
         for language in languages_by_letter:
@@ -162,7 +174,8 @@ class Wiki:
             language_link = self.build_repo_link(language.name.capitalize(), letter, language.name)
             tag_link = self.build_tag_link(language.name)
             issues_link = self.build_issue_link(language.name)
-            page.add_table_row(language_link, tag_link, issues_link, str(language.total_snippets))
+            tests_link = self.build_test_link(language, letter)
+            page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))
         page.add_table_row("**Totals**", "", "", str(total_snippets))
         page.add_section_break()
         return page
@@ -172,7 +185,7 @@ class Page:
     def __init__(self, name: str):
         self.name: str = name
         self.wiki_url_base: str = "/jrg94/sample-programs/wiki/"
-        self.content: List(str) = list()
+        self.content = list()
 
     def __str__(self):
         return self.name + self._build_page()
@@ -207,12 +220,14 @@ class Page:
         output_file.write(self._build_page())
         output_file.close()
 
+
 def main():
     if len(sys.argv) > 1:
         wiki = Wiki(sys.argv[1])
         wiki.build_wiki()
     else:
         print("Please supply an input path")
+
 
 if __name__ == '__main__':
     main()
