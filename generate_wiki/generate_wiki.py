@@ -49,7 +49,7 @@ class Language:
         count = 0
         for file in self.file_list:
             file_name, file_ext = os.path.splitext(file)
-            if file_ext not in (".md", ""):
+            if file_ext not in (".md", "", ".yml"):
                 count += 1
         self.total_snippets = count
 
