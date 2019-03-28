@@ -108,9 +108,10 @@ class Wiki:
         lang_query = language.replace("-", "+")
         return self._build_link("Here", self.issue_url_base + lang_query)
 
-    def build_test_link(self, language: Language):
-        file_path = language.get_test_file_path()
-        if file_path:
+    def build_test_link(self, language: Language, letter: str):
+        file_name = language.get_test_file_path()
+        if file_name:
+            file_path = self.repo_url_base + letter + "/" + language.name + "/" + file_name
             file_path_link = self._build_link("Here", file_path)
         else:
             file_path_link = ""
@@ -173,7 +174,7 @@ class Wiki:
             language_link = self.build_repo_link(language.name.capitalize(), letter, language.name)
             tag_link = self.build_tag_link(language.name)
             issues_link = self.build_issue_link(language.name)
-            tests_link = self.build_test_link(language)
+            tests_link = self.build_test_link(language, letter)
             page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))
         page.add_table_row("**Totals**", "", "", str(total_snippets))
         page.add_section_break()
