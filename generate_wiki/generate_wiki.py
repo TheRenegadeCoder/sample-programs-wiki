@@ -176,7 +176,7 @@ class Wiki:
             issues_link = self.build_issue_link(language.name)
             tests_link = self.build_test_link(language, letter)
             page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))
-        page.add_table_row("**Totals**", "", "", str(total_snippets))
+        page.add_table_row("**Totals**", "", "", "", str(total_snippets))
         page.add_section_break()
         return page
 
