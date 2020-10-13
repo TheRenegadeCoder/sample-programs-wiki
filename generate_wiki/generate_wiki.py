@@ -10,6 +10,7 @@ class Repo:
         self.source_dir: str = source_dir
         self.languages: List[Language] = list()
         self.total_snippets: int = 0
+        self.total_tests: int = 0
 
     def analyze_repo(self):
         for root, directories, files in os.walk(self.source_dir):
@@ -18,12 +19,19 @@ class Repo:
                 language.analyze_language()
                 self.languages.append(language)
         self.compute_total_snippets()
+        self.compute_total_tests()
 
     def compute_total_snippets(self):
         count = 0
         for language in self.languages:
             count += language.total_snippets
         self.total_snippets = count
+        
+    def compute_total_tests(self):
+        count = 0
+        for language in self.languages:
+            count += 1 if language.get_test_file_path() else 0
+        self.total_tests = count
 
     def get_languages_by_letter(self, letter):
         language_list = [language for language in self.languages if language.name.startswith(letter)]
@@ -135,14 +143,15 @@ class Wiki:
     def build_alphabet_catalog(self):
         page = Page("Alphabetical Language Catalog")
         alphabetical_list = self.get_sorted_letters()
-        page.add_table_header("Collection", "# of Languages", "# of Snippets")
+        page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
         for letter in alphabetical_list:
             letter_link = self.build_wiki_link(letter.capitalize(), letter.capitalize())
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
-            page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets))
-        page.add_table_row("**Totals**", str(len(self.repo.languages)), str(self.repo.total_snippets))
+            num_of_tests = sum([1 if language.get_test_file_path() else 0 for language in languages_by_letter])
+            page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests))
+        page.add_table_row("**Totals**", str(len(self.repo.languages)), str(self.repo.total_snippets), str(self.repo.total_tests))
         self.pages.append(page)
 
     def build_alphabet_pages(self):
