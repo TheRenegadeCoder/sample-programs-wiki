@@ -1,7 +1,5 @@
 # The Sample Programs Wiki Generator
 
-[![Join the chat at https://gitter.im/TheRenegadeCoder/sample-programs-wiki-generator](https://badges.gitter.im/TheRenegadeCoder/sample-programs-wiki-generator.svg)](https://gitter.im/TheRenegadeCoder/sample-programs-wiki-generator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Currently, the Sample Programs Wiki Generator repo houses the `generate-wiki.py` script which
 we use in the Sample Programs repository to generate our wiki documentation. The script
 is automated by a Travis CI build in the Sample Programs repo.
