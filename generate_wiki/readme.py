@@ -29,7 +29,8 @@ def _generate_program_list(language: LanguageCollection) -> list:
     """
     list_items = list()
     for program in language.sample_programs:
-        list_items.append(f"- {program.file_name} in {program.language}")
+        doc_link = program.sample_program_doc_url
+        list_items.append(f"- [{program.file_name} in {program.language}]({doc_link})")
     return list_items
 
 

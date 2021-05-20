@@ -147,6 +147,7 @@ class SampleProgram:
         self.file_name = file_name
         self.language = language
         self.sample_program_doc_url: Optional[str] = None
+        self._generate_urls()
 
     def get_size(self) -> int:
         """
@@ -165,9 +166,9 @@ class SampleProgram:
 
     def _file_name_to_url(self):
         stem = os.path.splitext(self.file_name)[0]
-        if len(hyphens := stem.split("-")) > 1:
+        if len(stem.split("-")) > 1:
             url = stem
-        elif len(underscores := stem.split("_")) > 1:
+        elif len(stem.split("_")) > 1:
             url = stem.replace("_", "-")
         else:
             url = "-".join(re.findall('[a-zA-Z][^A-Z]*', stem))
