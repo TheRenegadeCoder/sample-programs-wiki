@@ -9,7 +9,7 @@ class Wiki:
     def __init__(self, repo):
         self.repo: Repo = repo
         self.wiki_url_base: str = "/TheRenegadeCoder/sample-programs/wiki/"
-        self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/master/archive/"
+        self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/main/archive/"
         self.tag_url_base: str = "https://sample-programs.therenegadecoder.com/languages/"
         self.issue_url_base: str = "/TheRenegadeCoder/sample-programs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
         self.pages: list[MarkdownPage] = list()
@@ -34,13 +34,22 @@ class Wiki:
     def _build_wiki_link(self, text: str, page_name: str) -> str:
         """
         A helper method which creates a link to a wiki page.
+        (e.g., https://github.com/TheRenegadeCoder/sample-programs/wiki/S)
         :param text: the text to display for the link
         :param page_name: the name of the page to link
         :return: a markdown link to a wiki page
         """
         return create_md_link(text, self.wiki_url_base + page_name)
 
-    def build_repo_link(self, text: str, letter: str, language: str) -> str:
+    def _build_repo_link(self, text: str, letter: str, language: str) -> str:
+        """
+        A helper method which creates a link to the language folder in the repo
+        (e.g., https://github.com/TheRenegadeCoder/sample-programs/tree/main/archive/c/c-sharp.)
+        :param text: the link text
+        :param letter: the starting letter of the language
+        :param language: the language to link
+        :return: a markdown link to a sample programs language page
+        """
         return create_md_link(text, self.repo_url_base + letter + "/" + language)
 
     def build_tag_link(self, language):
@@ -108,7 +117,7 @@ class Wiki:
         total_snippets = 0
         for language in languages_by_letter:
             total_snippets += language.total_snippets
-            language_link = self.build_repo_link(language.name.capitalize(), letter, language.name)
+            language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
             tag_link = self.build_tag_link(language.name)
             issues_link = self.build_issue_link(language.name)
             tests_link = self.build_test_link(language, letter)
