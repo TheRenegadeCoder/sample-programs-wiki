@@ -1,7 +1,7 @@
 import os
 import urllib.request
 
-from generate_wiki.markdown import MarkdownPage
+from generate_wiki.markdown import MarkdownPage, create_md_link
 from generate_wiki.repo import Repo, LanguageCollection
 
 
@@ -15,50 +15,51 @@ class Wiki:
         self.pages: list[MarkdownPage] = list()
 
     @staticmethod
-    def _build_link(text: str, url: str) -> str:
-        """
-        Generates a markdown link in the form [text](url).
-        :param text: the link text
-        :param url: the url to link
-        :return: a markdown link
-        """
-        separator = ""
-        return separator.join(["[", text, "]", "(", url, ")"])
-
-    @staticmethod
     def verify_link(url):
+        """
+        Verifies that a URL is a valid URL.
+        :param url: a website URL
+        :return: True if the URL is valid; False otherwise
+        """
         request = urllib.request.Request(url)
         request.get_method = lambda: 'HEAD'
-        print("Trying: ", url)
+        print(f"Trying: {url}")
         try:
             urllib.request.urlopen(request)
             return True
         except urllib.request.HTTPError:
+            print(f"{url} is invalid")
             return False
 
-    def build_wiki_link(self, text: str, page_name: str) -> str:
-        return self._build_link(text, self.wiki_url_base + page_name)
+    def _build_wiki_link(self, text: str, page_name: str) -> str:
+        """
+        A helper method which creates a link to a wiki page.
+        :param text: the text to display for the link
+        :param page_name: the name of the page to link
+        :return: a markdown link to a wiki page
+        """
+        return create_md_link(text, self.wiki_url_base + page_name)
 
     def build_repo_link(self, text: str, letter: str, language: str) -> str:
-        return self._build_link(text, self.repo_url_base + letter + "/" + language)
+        return create_md_link(text, self.repo_url_base + letter + "/" + language)
 
     def build_tag_link(self, language):
         test_url = self.tag_url_base + language
         if not self.verify_link(test_url):
             markdown_url = ""
         else:
-            markdown_url = self._build_link("Here", test_url)
+            markdown_url = create_md_link("Here", test_url)
         return markdown_url
 
     def build_issue_link(self, language: str):
         lang_query = language.replace("-", "+")
-        return self._build_link("Here", self.issue_url_base + lang_query)
+        return create_md_link("Here", self.issue_url_base + lang_query)
 
     def build_test_link(self, language: LanguageCollection, letter: str):
         file_name = language.get_test_file_path()
         if file_name:
             file_path = self.repo_url_base + letter + "/" + language.name + "/" + file_name
-            file_path_link = self._build_link("Here", file_path)
+            file_path_link = create_md_link("Here", file_path)
         else:
             file_path_link = ""
         return file_path_link
@@ -72,7 +73,7 @@ class Wiki:
         alphabetical_list = self.get_sorted_letters()
         page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
         for letter in alphabetical_list:
-            letter_link = self.build_wiki_link(letter.capitalize(), letter.capitalize())
+            letter_link = self._build_wiki_link(letter.capitalize(), letter.capitalize())
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
@@ -91,8 +92,8 @@ class Wiki:
             next_letter = alphabetical_list[next_index].capitalize()
             previous_text = "Previous (%s)" % previous_letter
             next_text = "Next (%s)" % next_letter
-            previous_link = self.build_wiki_link(previous_text, previous_letter)
-            next_link = self.build_wiki_link(next_text, next_letter)
+            previous_link = self._build_wiki_link(previous_text, previous_letter)
+            next_link = self._build_wiki_link(next_text, next_letter)
             page.add_table_header(previous_link, next_link)
             self.pages.append(page)
 
