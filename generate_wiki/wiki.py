@@ -16,6 +16,12 @@ class Wiki:
 
     @staticmethod
     def _build_link(text: str, url: str) -> str:
+        """
+        Generates a markdown link in the form [text](url).
+        :param text: the link text
+        :param url: the url to link
+        :return: a markdown link
+        """
         separator = ""
         return separator.join(["[", text, "]", "(", url, ")"])
 
