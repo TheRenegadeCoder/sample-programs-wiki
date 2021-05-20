@@ -52,7 +52,13 @@ class Wiki:
         """
         return create_md_link(text, self.repo_url_base + letter + "/" + language)
 
-    def build_tag_link(self, language):
+    def _build_language_link(self, language):
+        """
+        A helper method which creates a link to a sample program language page.
+        (e.g., https://sample-programs.therenegadecoder.com/languages/c/)
+        :param language: the language to link
+        :return: a markdown link to the language page if it exists; an empty string otherwise
+        """
         test_url = self.tag_url_base + language
         if not self.verify_link(test_url):
             markdown_url = ""
@@ -60,7 +66,12 @@ class Wiki:
             markdown_url = create_md_link("Here", test_url)
         return markdown_url
 
-    def build_issue_link(self, language: str):
+    def _build_issue_link(self, language: str):
+        """
+        A helper method which creates a link to all issues matching that language.
+        :param language: the language to search for issues
+        :return: a markdown link to a GitHub query for issues matching this language
+        """
         lang_query = language.replace("-", "+")
         return create_md_link("Here", self.issue_url_base + lang_query)
 
@@ -118,8 +129,8 @@ class Wiki:
         for language in languages_by_letter:
             total_snippets += language.total_snippets
             language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
-            tag_link = self.build_tag_link(language.name)
-            issues_link = self.build_issue_link(language.name)
+            tag_link = self._build_language_link(language.name)
+            issues_link = self._build_issue_link(language.name)
             tests_link = self.build_test_link(language, letter)
             page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))
         page.add_table_row("**Totals**", "", "", "", str(total_snippets))
