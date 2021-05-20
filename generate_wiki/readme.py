@@ -44,7 +44,7 @@ class ReadMeCatalog:
         :param repo: a repository instance
         """
         self.repo: Repo = repo
-        self.pages: list[MarkdownPage] = list()
+        self.pages: dict[str, MarkdownPage] = dict()
         self._build_readmes()
 
     def _build_readme(self, language: LanguageCollection) -> None:
@@ -64,7 +64,7 @@ class ReadMeCatalog:
         page.add_section_break()
         page.add_content(*_generate_program_list(language))
         page.add_section_break()
-        self.pages.append(page)
+        self.pages[language.name] = page
 
     def _build_readmes(self) -> None:
         """

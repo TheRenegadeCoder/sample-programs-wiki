@@ -47,8 +47,8 @@ class Generator:
         """
         for page in self.wiki.pages:
             page.output_page("wiki")
-        for page in self.readme_catalog.pages:
-            page.output_page("readme")
+        for language, page in self.readme_catalog.pages.items():
+            page.output_page(f"readme/{language}")
 
 
 def main():
