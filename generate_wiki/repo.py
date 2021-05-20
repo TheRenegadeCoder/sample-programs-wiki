@@ -6,6 +6,7 @@ class Repo:
     """
     An object representing the Sample Programs repository.
     """
+
     def __init__(self, source_dir):
         self.source_dir: str = source_dir
         self.languages: list[LanguageCollection] = list()
@@ -48,12 +49,14 @@ class LanguageCollection:
     """
     An object representing a collection of sample programs files for a particular programming language.
     """
+
     def __init__(self, name: str, path: str, file_list: list[str]):
         self.name: str = name
         self.path: str = path
         self.file_list: list[str] = file_list
         self.sample_programs: list[SampleProgram] = list()
         self.test_file_path: Optional[str] = None
+        self.read_me_path: Optional[str] = None
         self.total_snippets: int = 0
         self.total_dir_size: int = 0
         self._collect_sample_programs()
@@ -72,7 +75,9 @@ class LanguageCollection:
             if file_ext not in (".md", "", ".yml"):
                 self.sample_programs.append(SampleProgram(self.path, file, self.name))
             elif file_ext == ".yml":
-                self.test_file_path = file
+                self.test_file_path = os.path.join(file)
+            elif file_name == "README":
+                self.read_me_path = os.path.join(self.path, file)
 
     def _analyze_language_collection(self) -> None:
         """
@@ -88,7 +93,14 @@ class SampleProgram:
     """
     An object representing a sample program in the repo.
     """
+
     def __init__(self, path: str, file_name: str, language: str):
+        """
+        Constructs a sample program.
+        :param path: the path to the sample program without the file name
+        :param file_name: the name of the file including the extension
+        :param language: the programming language of this sample program
+        """
         self.path = path
         self.file_name = file_name
         self.language = language
