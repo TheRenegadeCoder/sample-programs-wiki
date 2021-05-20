@@ -29,7 +29,8 @@ def _generate_program_list(language: LanguageCollection) -> list:
     """
     list_items = list()
     for program in language.sample_programs:
-        doc_link = build_doc_link(program, f"{program.file_name} in {program.language}")
+        readable_name = program.normalized_name.replace("-", " ").title()
+        doc_link = build_doc_link(program, f"{readable_name} in {program.language}")
         list_items.append(f"- {doc_link}")
     return list_items
 

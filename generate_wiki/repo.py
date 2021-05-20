@@ -148,6 +148,8 @@ class SampleProgram:
         self.file_name = file_name
         self.language = language
         self.sample_program_doc_url: Optional[str] = None
+        self.sample_program_issue_url: Optional[str] = None
+        self.normalized_name: Optional[str] = None
         self._generate_urls()
 
     def get_size(self) -> int:
@@ -165,7 +167,7 @@ class SampleProgram:
         """
         return self.language
 
-    def _file_name_to_url(self):
+    def _normalize_program_name(self):
         stem = os.path.splitext(self.file_name)[0]
         if len(stem.split("-")) > 1:
             url = stem
@@ -176,5 +178,14 @@ class SampleProgram:
         return url
 
     def _generate_urls(self) -> None:
-        url_base = "https://sample-programs.therenegadecoder.com/projects"
-        self.sample_program_doc_url = f"{url_base}/{self._file_name_to_url()}/{self.language}"
+        doc_url_base = "https://sample-programs.therenegadecoder.com/projects"
+        issue_url_base = "/TheRenegadeCoder/sample-programs-website/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
+
+        self.normalized_name = self._normalize_program_name()
+
+        # doc URL
+        self.sample_program_doc_url = f"{doc_url_base}/{self.normalized_name}/{self.language}"
+
+        # issue URL
+        program = self.normalized_name.replace("-", "+")
+        self.sample_program_issue_url = f"{issue_url_base}{program}+{self.language}"

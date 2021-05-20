@@ -40,9 +40,9 @@ def build_doc_link(sample_program: SampleProgram, text: str) -> str:
     :return: a markdown link to the docs page if it exists; an empty string otherwise
     """
     if not verify_link(sample_program.sample_program_doc_url):
-        markdown_url = text
+        markdown_url = f":warning: {create_md_link(text, sample_program.sample_program_issue_url)}"
     else:
-        markdown_url = create_md_link(text, sample_program.sample_program_doc_url)
+        markdown_url = f":white_check_mark: {create_md_link(text, sample_program.sample_program_doc_url)}"
     return markdown_url
 
 
