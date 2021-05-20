@@ -8,6 +8,10 @@ class Repo:
     """
 
     def __init__(self, source_dir):
+        """
+        Constructs an instance of Repo.
+        :param source_dir: the location of the repo (e.g., C://.../sample-programs)
+        """
         self.source_dir: str = source_dir
         self.languages: list[LanguageCollection] = list()
         self.total_snippets: int = 0
@@ -51,6 +55,12 @@ class LanguageCollection:
     """
 
     def __init__(self, name: str, path: str, file_list: list[str]):
+        """
+        Constructs an instance of LanguageCollection.
+        :param name: the name of the language (e.g., Python)
+        :param path: the path of the language (e.g., .../archive/p/python/)
+        :param file_list: the list of files in language collection
+        """
         self.name: str = name
         self.path: str = path
         self.file_list: list[str] = file_list
