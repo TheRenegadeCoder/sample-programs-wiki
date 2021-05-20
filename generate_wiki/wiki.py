@@ -2,7 +2,7 @@ import os
 import urllib.request
 
 from generate_wiki.markdown import MarkdownPage
-from generate_wiki.repo import Repo, Language
+from generate_wiki.repo import Repo, LanguageCollection
 
 
 class Wiki:
@@ -48,7 +48,7 @@ class Wiki:
         lang_query = language.replace("-", "+")
         return self._build_link("Here", self.issue_url_base + lang_query)
 
-    def build_test_link(self, language: Language, letter: str):
+    def build_test_link(self, language: LanguageCollection, letter: str):
         file_name = language.get_test_file_path()
         if file_name:
             file_path = self.repo_url_base + letter + "/" + language.name + "/" + file_name
