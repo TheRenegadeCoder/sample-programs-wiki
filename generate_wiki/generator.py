@@ -22,7 +22,6 @@ class Generator:
         :return: None
         """
         self.repo = Repo(self.source_dir)
-        self.repo.analyze_repo()
         self._build_wiki()
         self._build_readme_catalog()
         self._output_documents()

@@ -98,6 +98,7 @@ class LanguageCollection:
         self.total_dir_size: int = 0
         self._collect_sample_programs()
         self._analyze_language_collection()
+        self._generate_urls()
 
     def __str__(self) -> str:
         return self.name + ";" + str(self.total_snippets) + ";" + str(self.total_dir_size)

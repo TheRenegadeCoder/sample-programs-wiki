@@ -35,9 +35,10 @@ class Wiki:
         print(f"Trying: {url}")
         try:
             urllib.request.urlopen(request)
+            print(f"\tVALID")
             return True
         except urllib.request.HTTPError:
-            print(f"{url} is invalid")
+            print(f"\tINVALID")
             return False
 
     def _build_wiki_link(self, text: str, page_name: str) -> str:
@@ -155,7 +156,7 @@ class Wiki:
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
-            num_of_tests = sum([1 if language.get_test_file_path() else 0 for language in languages_by_letter])
+            num_of_tests = sum([1 if language.test_file_path else 0 for language in languages_by_letter])
             page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests))
         page.add_table_row(
             "**Totals**",
