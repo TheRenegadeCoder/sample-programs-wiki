@@ -103,7 +103,7 @@ class Wiki:
         A helper method which generates a list of sorted letters from the sample programs archive.
         :return: a sorted list of letters
         """
-        unsorted_letters = os.listdir(self.repo.source_dir)
+        unsorted_letters = os.listdir(self.repo._source_dir)
         return sorted(unsorted_letters, key=lambda s: s.casefold())
 
     def _build_alphabet_page(self, letter: str):

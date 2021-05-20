@@ -1,3 +1,11 @@
+"""
+The repo module contains all the classes need to represent the Sample Programs repo.
+This file was designed with the intent of creating read-only objects that fully
+represent the underlying repo. Ideally, classes that make use of these objects
+should not need to know how they were generated. For example, we do not want users
+to poke around the source directory that was used to generate these files.
+"""
+
 import os
 from typing import Optional
 
@@ -12,7 +20,7 @@ class Repo:
         Constructs an instance of Repo.
         :param source_dir: the location of the repo (e.g., C://.../sample-programs)
         """
-        self.source_dir: str = source_dir
+        self._source_dir: str = source_dir
         self.languages: list[LanguageCollection] = list()
         self.total_snippets: int = 0
         self.total_tests: int = 0
@@ -25,7 +33,7 @@ class Repo:
         Builds a list of language collections.
         :return: None
         """
-        for root, directories, files in os.walk(self.source_dir):
+        for root, directories, files in os.walk(self._source_dir):
             if not directories:
                 language = LanguageCollection(os.path.basename(root), root, files)
                 self.languages.append(language)
