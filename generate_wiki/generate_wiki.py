@@ -2,7 +2,7 @@ import os
 import sys
 import pathlib
 import urllib.request
-from typing import List
+from typing import List, Optional
 
 
 class Repo:
@@ -221,26 +221,54 @@ class Wiki:
         return page
 
 
-class ReadMe:
-    def __init__(self):
-        pass
+class ReadMeCatalog:
+    def __init__(self, repo):
+        self.repo: Repo = repo
 
 
 class Generator:
+    """
+    The top-level class used to generate wiki and README objects.
+    """
     def __init__(self, source_dir):
-        self.repo: Repo = None
         self.source_dir = source_dir
+        self.repo: Optional[Repo] = None
+        self.wiki: Optional[Wiki] = None
+        self.readme_catalog: Optional[ReadMeCatalog] = None
 
-    def build(self):
+    def build(self) -> None:
+        """
+        Builds the wiki and README objects.
+        :return: None
+        """
         self.repo = Repo(self.source_dir)
         self.repo.analyze_repo()
         self._build_wiki()
+        self._build_readme_catalog()
+        self._output_documents()
 
-    def _build_wiki(self):
-        wiki = Wiki(self.repo)
-        wiki.build_alphabet_catalog()
-        wiki.build_alphabet_pages()
-        wiki.output_pages()
+    def _build_wiki(self) -> None:
+        """
+        Builds the wiki object from the repo object.
+        :return: None
+        """
+        self.wiki = Wiki(self.repo)
+        self.wiki.build_alphabet_catalog()
+        self.wiki.build_alphabet_pages()
+
+    def _build_readme_catalog(self) -> None:
+        """
+        Builds the readme object from the repo object.
+        :return:
+        """
+        self.readme_catalog = ReadMeCatalog(self.repo)
+
+    def _output_documents(self) -> None:
+        """
+        Outputs all documents associated with the wiki and readme objects.
+        :return: None
+        """
+        self.wiki.output_pages()
 
 
 def main():
