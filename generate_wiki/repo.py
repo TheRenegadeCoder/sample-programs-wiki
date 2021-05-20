@@ -8,6 +8,7 @@ users should make use of the public fields only.
 """
 
 import os
+import re
 from typing import Optional
 
 
@@ -145,6 +146,7 @@ class SampleProgram:
         self.path = path
         self.file_name = file_name
         self.language = language
+        self.sample_program_doc_url: Optional[str] = None
 
     def get_size(self) -> int:
         """
@@ -160,3 +162,17 @@ class SampleProgram:
         :return: the language of the sample program
         """
         return self.language
+
+    def _file_name_to_url(self):
+        stem = os.path.splitext(self.file_name)[0]
+        if len(hyphens := stem.split("-")) > 1:
+            url = stem
+        elif len(underscores := stem.split("_")) > 1:
+            url = stem.replace("_", "-")
+        else:
+            url = "-".join(re.findall('[a-zA-Z][^A-Z]*', stem))
+        return url
+
+    def _generate_urls(self) -> None:
+        url_base = "https://sample-programs.therenegadecoder.com/projects"
+        self.sample_program_doc_url = f"{url_base}/{self._file_name_to_url()}/{self.language}"

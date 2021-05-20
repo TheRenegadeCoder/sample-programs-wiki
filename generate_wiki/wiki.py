@@ -1,7 +1,6 @@
 import os
-import urllib.request
 
-from generate_wiki.markdown import MarkdownPage, create_md_link
+from generate_wiki.markdown import MarkdownPage, create_md_link, build_language_link
 from generate_wiki.repo import Repo, LanguageCollection
 
 
@@ -23,24 +22,6 @@ class Wiki:
         self._build_alphabet_catalog()
         self._build_alphabet_pages()
 
-    @staticmethod
-    def verify_link(url: str) -> bool:
-        """
-        Verifies that a URL is a valid URL.
-        :param url: a website URL
-        :return: True if the URL is valid; False otherwise
-        """
-        request = urllib.request.Request(url)
-        request.get_method = lambda: 'HEAD'
-        print(f"Trying: {url}")
-        try:
-            urllib.request.urlopen(request)
-            print(f"\tVALID")
-            return True
-        except urllib.request.HTTPError:
-            print(f"\tINVALID")
-            return False
-
     def _build_wiki_link(self, text: str, page_name: str) -> str:
         """
         A helper method which creates a link to a wiki page.
@@ -61,19 +42,6 @@ class Wiki:
         :return: a markdown link to a sample programs language page
         """
         return create_md_link(text, self.repo_url_base + letter + "/" + language)
-
-    def _build_language_link(self, language: LanguageCollection) -> str:
-        """
-        A helper method which creates a link to a sample program language page.
-        (e.g., https://sample-programs.therenegadecoder.com/languages/c/)
-        :param language: the language to link
-        :return: a markdown link to the language page if it exists; an empty string otherwise
-        """
-        if not self.verify_link(language.sample_program_url):
-            markdown_url = ""
-        else:
-            markdown_url = create_md_link("Here", language.sample_program_url)
-        return markdown_url
 
     def _build_issue_link(self, language: str) -> str:
         """
@@ -116,7 +84,7 @@ class Wiki:
         for language in languages_by_letter:
             total_snippets += language.total_snippets
             language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
-            tag_link = self._build_language_link(language)
+            tag_link = build_language_link(language)
             issues_link = self._build_issue_link(language.name)
             tests_link = self._build_test_link(language, letter)
             page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))

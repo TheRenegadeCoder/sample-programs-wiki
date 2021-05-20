@@ -1,5 +1,9 @@
 import os
 import pathlib
+from urllib.error import HTTPError
+from urllib import request
+
+from generate_wiki.repo import LanguageCollection
 
 
 def create_md_link(text: str, url: str) -> str:
@@ -11,6 +15,38 @@ def create_md_link(text: str, url: str) -> str:
     """
     separator = ""
     return separator.join(["[", text, "]", "(", url, ")"])
+
+
+def build_language_link(language: LanguageCollection) -> str:
+    """
+    A handy abstraction for the create_md_link() method which creates a link to a sample programs language page.
+    (e.g., https://sample-programs.therenegadecoder.com/languages/c/)
+    :param language: the language to link
+    :return: a markdown link to the language page if it exists; an empty string otherwise
+    """
+    if not verify_link(language.sample_program_url):
+        markdown_url = ""
+    else:
+        markdown_url = create_md_link("Here", language.sample_program_url)
+    return markdown_url
+
+
+def verify_link(url: str) -> bool:
+    """
+    Verifies that a URL is a valid URL.
+    :param url: a website URL
+    :return: True if the URL is valid; False otherwise
+    """
+    req = request.Request(url)
+    req.get_method = lambda: 'HEAD'
+    print(f"Trying: {url}")
+    try:
+        request.urlopen(req)
+        print(f"\tVALID")
+        return True
+    except HTTPError:
+        print(f"\tINVALID")
+        return False
 
 
 class MarkdownPage:
