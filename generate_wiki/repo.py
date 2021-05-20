@@ -179,7 +179,8 @@ class SampleProgram:
 
     def _generate_urls(self) -> None:
         doc_url_base = "https://sample-programs.therenegadecoder.com/projects"
-        issue_url_base = "/TheRenegadeCoder/sample-programs-website/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
+        issue_url_base = "https://github.com//TheRenegadeCoder/" \
+                         "sample-programs-website/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
 
         self.normalized_name = self._normalize_program_name()
 
