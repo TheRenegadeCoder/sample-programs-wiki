@@ -165,5 +165,10 @@ class Wiki:
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
             num_of_tests = sum([1 if language.get_test_file_path() else 0 for language in languages_by_letter])
             page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests))
-        page.add_table_row("**Totals**", str(len(self.repo.languages)), str(self.repo.total_snippets), str(self.repo.total_tests))
+        page.add_table_row(
+            "**Totals**",
+            str(len(self.repo.languages)),
+            str(self.repo.total_snippets),
+            str(self.repo.total_tests)
+        )
         self.pages.append(page)
