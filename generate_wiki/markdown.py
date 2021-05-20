@@ -1,3 +1,7 @@
+import os
+import pathlib
+
+
 class MarkdownPage:
     def __init__(self, name: str):
         self.name: str = name
@@ -27,3 +31,9 @@ class MarkdownPage:
 
     def add_section_break(self):
         self.content.append("")
+
+    def output_page(self, dump_dir, file_name):
+        pathlib.Path(dump_dir).mkdir(parents=True, exist_ok=True)
+        output_file = open(os.path.join(dump_dir, file_name), "w+")
+        output_file.write(self._build_page())
+        output_file.close()

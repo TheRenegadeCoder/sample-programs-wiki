@@ -1,9 +1,6 @@
-import os
-import pathlib
 import sys
 from typing import Optional
 
-from generate_wiki.markdown import MarkdownPage
 from generate_wiki.readme import ReadMeCatalog
 from generate_wiki.repo import Repo
 from generate_wiki.wiki import Wiki
@@ -52,16 +49,9 @@ class Generator:
         :return: None
         """
         for page in self.wiki.pages:
-            self._output_wiki_page(page)
-
-    def _output_wiki_page(self, page: MarkdownPage):
-        separator = "-"
-        file_name = separator.join(self.name.split()) + ".md"
-        dump_dir = 'wiki'
-        pathlib.Path(dump_dir).mkdir(parents=True, exist_ok=True)
-        output_file = open(os.path.join(dump_dir, file_name), "w+")
-        output_file.write(self._build_page())
-        output_file.close()
+            separator = "-"
+            file_name = separator.join(page.name.split()) + ".md"
+            page.output_page("wiki", file_name)
 
 
 def main():
