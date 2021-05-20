@@ -111,6 +111,7 @@ class LanguageCollection:
         """
         for file in self.file_list:
             file_name, file_ext = os.path.splitext(file)
+            file_ext = file_ext.lower()
             if file_ext not in (".md", "", ".yml"):
                 self.sample_programs.append(SampleProgram(self.path, file, self.name))
             elif file_ext == ".yml":
@@ -171,7 +172,7 @@ class SampleProgram:
         elif len(stem.split("_")) > 1:
             url = stem.replace("_", "-")
         else:
-            url = "-".join(re.findall('[a-zA-Z][^A-Z]*', stem))
+            url = "-".join(re.findall('[a-zA-Z][^A-Z]*', stem)).lower()
         return url
 
     def _generate_urls(self) -> None:

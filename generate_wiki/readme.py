@@ -1,4 +1,4 @@
-from generate_wiki.markdown import MarkdownPage
+from generate_wiki.markdown import MarkdownPage, build_doc_link
 from generate_wiki.repo import Repo, LanguageCollection
 
 
@@ -29,8 +29,8 @@ def _generate_program_list(language: LanguageCollection) -> list:
     """
     list_items = list()
     for program in language.sample_programs:
-        doc_link = program.sample_program_doc_url
-        list_items.append(f"- [{program.file_name} in {program.language}]({doc_link})")
+        doc_link = build_doc_link(program, f"{program.file_name} in {program.language}")
+        list_items.append(f"- {doc_link}")
     return list_items
 
 

@@ -3,7 +3,7 @@ import pathlib
 from urllib.error import HTTPError
 from urllib import request
 
-from generate_wiki.repo import LanguageCollection
+from generate_wiki.repo import LanguageCollection, SampleProgram
 
 
 def create_md_link(text: str, url: str) -> str:
@@ -28,6 +28,21 @@ def build_language_link(language: LanguageCollection) -> str:
         markdown_url = ""
     else:
         markdown_url = create_md_link("Here", language.sample_program_url)
+    return markdown_url
+
+
+def build_doc_link(sample_program: SampleProgram, text: str) -> str:
+    """
+    A handy abstraction for the create_md_link() method which creates a link to a sample programs docs page.
+    (e.g., https://sample-programs.therenegadecoder.com/projects/even-odd/c/)
+    :param sample_program: the sample program
+    :param text: the label for the link
+    :return: a markdown link to the docs page if it exists; an empty string otherwise
+    """
+    if not verify_link(sample_program.sample_program_doc_url):
+        markdown_url = text
+    else:
+        markdown_url = create_md_link(text, sample_program.sample_program_doc_url)
     return markdown_url
 
 
