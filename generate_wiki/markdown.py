@@ -45,9 +45,6 @@ class MarkdownPage:
     def add_section_break(self):
         self.content.append("")
 
-    def add_list_item(self, item: str, depth: int = 0):
-        self.content.append(f"{' ' * depth}- {item}")
-
     def output_page(self, dump_dir):
         pathlib.Path(dump_dir).mkdir(parents=True, exist_ok=True)
         output_file = open(os.path.join(dump_dir, self._get_file_name()), "w+")
