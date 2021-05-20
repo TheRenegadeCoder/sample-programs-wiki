@@ -46,9 +46,9 @@ class Generator:
         :return: None
         """
         for page in self.wiki.pages:
-            separator = "-"
-            file_name = separator.join(page.name.split()) + ".md"
-            page.output_page("wiki", file_name)
+            page.output_page("wiki")
+        for page in self.readme_catalog.pages:
+            page.output_page("readme")
 
 
 def main():

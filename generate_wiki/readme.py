@@ -53,7 +53,9 @@ class ReadMeCatalog:
         :param language: a programming language collection (e.g., Python)
         :return: None
         """
-        page = MarkdownPage(f"# Sample Programs in {language.name.capitalize()}")
+        page = MarkdownPage("README")
+        page.add_content(f"# Sample Programs in {language.name.capitalize()}")
+        page.add_section_break()
         page.add_content(_get_intro_text(language))
         page.add_section_break()
         page.add_content("## Sample Programs")
