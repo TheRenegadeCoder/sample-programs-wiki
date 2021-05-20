@@ -76,6 +76,7 @@ class LanguageCollection:
         self.sample_programs: list[SampleProgram] = list()
         self.test_file_path: Optional[str] = None
         self.read_me_path: Optional[str] = None
+        self.sample_program_url: Optional[str] = None
         self.total_snippets: int = 0
         self.total_dir_size: int = 0
         self._collect_sample_programs()
@@ -106,6 +107,9 @@ class LanguageCollection:
         for sample_program in self.sample_programs:
             self.total_dir_size += sample_program.get_size()
         self.total_snippets = len(self.sample_programs)
+
+    def _generate_urls(self) -> None:
+        self.sample_program_url = f"https://sample-programs.therenegadecoder.com/languages/{self.name}"
 
 
 class SampleProgram:

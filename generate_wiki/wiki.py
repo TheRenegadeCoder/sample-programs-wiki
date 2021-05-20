@@ -18,7 +18,6 @@ class Wiki:
         self.repo: Repo = repo
         self.wiki_url_base: str = "/TheRenegadeCoder/sample-programs/wiki/"
         self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/main/archive/"
-        self.tag_url_base: str = "https://sample-programs.therenegadecoder.com/languages/"
         self.issue_url_base: str = "/TheRenegadeCoder/sample-programs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
         self.pages: list[MarkdownPage] = list()
         self._build_alphabet_catalog()
@@ -62,18 +61,17 @@ class Wiki:
         """
         return create_md_link(text, self.repo_url_base + letter + "/" + language)
 
-    def _build_language_link(self, language: str) -> str:
+    def _build_language_link(self, language: LanguageCollection) -> str:
         """
         A helper method which creates a link to a sample program language page.
         (e.g., https://sample-programs.therenegadecoder.com/languages/c/)
         :param language: the language to link
         :return: a markdown link to the language page if it exists; an empty string otherwise
         """
-        test_url = self.tag_url_base + language
-        if not self.verify_link(test_url):
+        if not self.verify_link(language.sample_program_url):
             markdown_url = ""
         else:
-            markdown_url = create_md_link("Here", test_url)
+            markdown_url = create_md_link("Here", language.sample_program_url)
         return markdown_url
 
     def _build_issue_link(self, language: str) -> str:
@@ -125,7 +123,7 @@ class Wiki:
         for language in languages_by_letter:
             total_snippets += language.total_snippets
             language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
-            tag_link = self._build_language_link(language.name)
+            tag_link = self._build_language_link(language)
             issues_link = self._build_issue_link(language.name)
             tests_link = self._build_test_link(language, letter)
             page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))

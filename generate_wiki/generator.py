@@ -33,8 +33,6 @@ class Generator:
         :return: None
         """
         self.wiki = Wiki(self.repo)
-        self.wiki._build_alphabet_catalog()
-        self.wiki._build_alphabet_pages()
 
     def _build_readme_catalog(self) -> None:
         """
