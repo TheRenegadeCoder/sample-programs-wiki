@@ -71,11 +71,49 @@ class Language:
             size += os.path.getsize(relative_path)
         self.total_dir_size = size
 
+class Page:
+    def __init__(self, name: str):
+        self.name: str = name
+        self.wiki_url_base: str = "/jrg94/sample-programs/wiki/"
+        self.content = list()
+
+    def __str__(self):
+        return self.name + self._build_page()
+
+    def _build_page(self):
+        return "\n".join(self.content)
+
+    def add_row(self, row: str):
+        self.content.append(row)
+
+    def add_table_header(self, *args):
+        column_separator = " | "
+        header = column_separator.join(args)
+        divider = column_separator.join(["-----"] * len(args))
+        self.content.append(header)
+        self.content.append(divider)
+
+    def add_table_row(self, *args):
+        column_separator = " | "
+        row = column_separator.join(args)
+        self.content.append(row)
+
+    def add_section_break(self):
+        self.content.append("")
+
+    def output_page(self):
+        separator = "-"
+        file_name = separator.join(self.name.split()) + ".md"
+        dump_dir = 'wiki'
+        pathlib.Path(dump_dir).mkdir(parents=True, exist_ok=True)
+        output_file = open(os.path.join(dump_dir, file_name), "w+")
+        output_file.write(self._build_page())
+        output_file.close()
+
 
 class Wiki:
-    def __init__(self, source_dir):
-        self.repo: Repo = None
-        self.source_dir = source_dir
+    def __init__(self, repo):
+        self.repo: Repo = repo
         self.wiki_url_base: str = "/TheRenegadeCoder/sample-programs/wiki/"
         self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/master/archive/"
         self.tag_url_base: str = "https://sample-programs.therenegadecoder.com/languages/"
@@ -124,13 +162,6 @@ class Wiki:
         else:
             file_path_link = ""
         return file_path_link
-
-    def build_wiki(self):
-        self.repo = Repo(self.source_dir)
-        self.repo.analyze_repo()
-        self.build_alphabet_catalog()
-        self.build_alphabet_pages()
-        self.output_pages()
 
     def output_pages(self):
         for page in self.pages:
@@ -190,50 +221,32 @@ class Wiki:
         return page
 
 
-class Page:
-    def __init__(self, name: str):
-        self.name: str = name
-        self.wiki_url_base: str = "/jrg94/sample-programs/wiki/"
-        self.content = list()
+class ReadMe:
+    def __init__(self):
+        pass
 
-    def __str__(self):
-        return self.name + self._build_page()
 
-    def _build_page(self):
-        return "\n".join(self.content)
+class Generator:
+    def __init__(self, source_dir):
+        self.repo: Repo = None
+        self.source_dir = source_dir
 
-    def add_row(self, row: str):
-        self.content.append(row)
+    def build(self):
+        self.repo = Repo(self.source_dir)
+        self.repo.analyze_repo()
+        self._build_wiki()
 
-    def add_table_header(self, *args):
-        column_separator = " | "
-        header = column_separator.join(args)
-        divider = column_separator.join(["-----"] * len(args))
-        self.content.append(header)
-        self.content.append(divider)
-
-    def add_table_row(self, *args):
-        column_separator = " | "
-        row = column_separator.join(args)
-        self.content.append(row)
-
-    def add_section_break(self):
-        self.content.append("")
-
-    def output_page(self):
-        separator = "-"
-        file_name = separator.join(self.name.split()) + ".md"
-        dump_dir = 'wiki'
-        pathlib.Path(dump_dir).mkdir(parents=True, exist_ok=True)
-        output_file = open(os.path.join(dump_dir, file_name), "w+")
-        output_file.write(self._build_page())
-        output_file.close()
+    def _build_wiki(self):
+        wiki = Wiki(self.repo)
+        wiki.build_alphabet_catalog()
+        wiki.build_alphabet_pages()
+        wiki.output_pages()
 
 
 def main():
     if len(sys.argv) > 1:
-        wiki = Wiki(sys.argv[1])
-        wiki.build_wiki()
+        generator = Generator(sys.argv[1])
+        generator.build()
     else:
         print("Please supply an input path")
 
