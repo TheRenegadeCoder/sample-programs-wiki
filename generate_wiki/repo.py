@@ -1,5 +1,6 @@
 import os
 import pathlib
+from typing import Optional
 
 
 class Repo:
@@ -8,26 +9,27 @@ class Repo:
         self.languages: list[LanguageCollection] = list()
         self.total_snippets: int = 0
         self.total_tests: int = 0
+        self._collect_languages()
+        self._analyze_repo()
 
-    def analyze_repo(self):
+    def _collect_languages(self) -> None:
+        """
+        Builds a list of language collections.
+        :return: None
+        """
         for root, directories, files in os.walk(self.source_dir):
             if not directories:
                 language = LanguageCollection(os.path.basename(root), root, files)
                 self.languages.append(language)
-        self.compute_total_snippets()
-        self.compute_total_tests()
 
-    def compute_total_snippets(self):
-        count = 0
+    def _analyze_repo(self) -> None:
+        """
+        Provides analytics for the repo.
+        :return: None
+        """
         for language in self.languages:
-            count += language.total_snippets
-        self.total_snippets = count
-
-    def compute_total_tests(self):
-        count = 0
-        for language in self.languages:
-            count += 1 if language.get_test_file_path() else 0
-        self.total_tests = count
+            self.total_snippets += language.total_snippets
+            self.total_tests += 1 if language.test_file_path else 0
 
     def get_languages_by_letter(self, letter):
         language_list = [language for language in self.languages if language.name.startswith(letter)]
@@ -40,6 +42,7 @@ class LanguageCollection:
         self.path: str = path
         self.file_list: list[str] = file_list
         self.sample_programs: list[SampleProgram] = list()
+        self.test_file_path: Optional[str] = None
         self.total_snippets: int = 0
         self.total_dir_size: int = 0
         self._collect_sample_programs()
@@ -57,6 +60,8 @@ class LanguageCollection:
             file_name, file_ext = os.path.splitext(file)
             if file_ext not in (".md", "", ".yml"):
                 self.sample_programs.append(SampleProgram(self.path, file))
+            elif file_ext == ".yml":
+                self.test_file_path = file
 
     def _analyze_language_collection(self) -> None:
         """
@@ -66,9 +71,6 @@ class LanguageCollection:
         for sample_program in self.sample_programs:
             self.total_dir_size += sample_program.get_size()
         self.total_snippets = len(self.sample_programs)
-
-    def get_test_file_path(self):
-        return next((file for file in self.file_list if os.path.splitext(file)[1] == ".yml"), None)
 
 
 class SampleProgram:
