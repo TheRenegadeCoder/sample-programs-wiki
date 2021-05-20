@@ -63,6 +63,14 @@ class Repo:
         """
         language_list = [language for language in self.languages if language.name.startswith(letter)]
         return sorted(language_list, key=lambda s: s.name.casefold())
+    
+    def get_sorted_language_letters(self):
+        """
+        A helper method which generates a list of sorted letters from the sample programs archive.
+        :return: a sorted list of letters
+        """
+        unsorted_letters = os.listdir(self._source_dir)
+        return sorted(unsorted_letters, key=lambda s: s.casefold())
 
 
 class LanguageCollection:

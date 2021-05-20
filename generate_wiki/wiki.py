@@ -98,14 +98,6 @@ class Wiki:
             file_path_link = ""
         return file_path_link
 
-    def _get_sorted_letters(self):
-        """
-        A helper method which generates a list of sorted letters from the sample programs archive.
-        :return: a sorted list of letters
-        """
-        unsorted_letters = os.listdir(self.repo._source_dir)
-        return sorted(unsorted_letters, key=lambda s: s.casefold())
-
     def _build_alphabet_page(self, letter: str):
         """
         A helper method which generates a single wiki alphabet page given a letter.
@@ -136,7 +128,7 @@ class Wiki:
         Builds a set of wiki alphabet pages from the repo.
         :return: None
         """
-        alphabetical_list = self._get_sorted_letters()
+        alphabetical_list = self.repo.get_sorted_language_letters()
         for index, letter in enumerate(alphabetical_list):
             page = self._build_alphabet_page(letter)
             previous_index = index - 1
@@ -156,7 +148,7 @@ class Wiki:
         :return: None
         """
         page = MarkdownPage("Alphabetical Language Catalog")
-        alphabetical_list = self._get_sorted_letters()
+        alphabetical_list = self.repo.get_sorted_language_letters()
         page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
         for letter in alphabetical_list:
             letter_link = self._build_wiki_link(letter.capitalize(), letter.capitalize())
