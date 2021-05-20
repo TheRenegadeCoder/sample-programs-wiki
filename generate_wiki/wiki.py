@@ -21,6 +21,8 @@ class Wiki:
         self.tag_url_base: str = "https://sample-programs.therenegadecoder.com/languages/"
         self.issue_url_base: str = "/TheRenegadeCoder/sample-programs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
         self.pages: list[MarkdownPage] = list()
+        self._build_alphabet_catalog()
+        self._build_alphabet_pages()
 
     @staticmethod
     def verify_link(url: str) -> bool:
@@ -98,40 +100,20 @@ class Wiki:
             file_path_link = ""
         return file_path_link
 
-    def get_sorted_letters(self):
+    def _get_sorted_letters(self):
+        """
+        A helper method which generates a list of sorted letters from the sample programs archive.
+        :return: a sorted list of letters
+        """
         unsorted_letters = os.listdir(self.repo.source_dir)
         return sorted(unsorted_letters, key=lambda s: s.casefold())
 
-    def build_alphabet_catalog(self):
-        page = MarkdownPage("Alphabetical Language Catalog")
-        alphabetical_list = self.get_sorted_letters()
-        page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
-        for letter in alphabetical_list:
-            letter_link = self._build_wiki_link(letter.capitalize(), letter.capitalize())
-            languages_by_letter = self.repo.get_languages_by_letter(letter)
-            num_of_languages = len(languages_by_letter)
-            num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
-            num_of_tests = sum([1 if language.get_test_file_path() else 0 for language in languages_by_letter])
-            page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests))
-        page.add_table_row("**Totals**", str(len(self.repo.languages)), str(self.repo.total_snippets), str(self.repo.total_tests))
-        self.pages.append(page)
-
-    def build_alphabet_pages(self):
-        alphabetical_list = self.get_sorted_letters()
-        for index, letter in enumerate(alphabetical_list):
-            page = self.build_alphabet_page(letter)
-            previous_index = index - 1
-            next_index = (index + 1) % len(alphabetical_list)
-            previous_letter = alphabetical_list[previous_index].capitalize()
-            next_letter = alphabetical_list[next_index].capitalize()
-            previous_text = "Previous (%s)" % previous_letter
-            next_text = "Next (%s)" % next_letter
-            previous_link = self._build_wiki_link(previous_text, previous_letter)
-            next_link = self._build_wiki_link(next_text, next_letter)
-            page.add_table_header(previous_link, next_link)
-            self.pages.append(page)
-
-    def build_alphabet_page(self, letter: str):
+    def _build_alphabet_page(self, letter: str):
+        """
+        A helper method which generates a single wiki alphabet page given a letter.
+        :param letter: the starting letter of a set of programming languages (e.g., "p" for [pascal, perl, python])
+        :return:
+        """
         page = MarkdownPage(letter.capitalize())
         introduction = """The following table contains all the existing languages
                     in the repository that start with the letter %s:""" % letter.capitalize()
@@ -150,3 +132,40 @@ class Wiki:
         page.add_table_row("**Totals**", "", "", "", str(total_snippets))
         page.add_section_break()
         return page
+
+    def _build_alphabet_pages(self) -> None:
+        """
+        Builds a set of wiki alphabet pages from the repo.
+        :return: None
+        """
+        alphabetical_list = self._get_sorted_letters()
+        for index, letter in enumerate(alphabetical_list):
+            page = self._build_alphabet_page(letter)
+            previous_index = index - 1
+            next_index = (index + 1) % len(alphabetical_list)
+            previous_letter = alphabetical_list[previous_index].capitalize()
+            next_letter = alphabetical_list[next_index].capitalize()
+            previous_text = "Previous (%s)" % previous_letter
+            next_text = "Next (%s)" % next_letter
+            previous_link = self._build_wiki_link(previous_text, previous_letter)
+            next_link = self._build_wiki_link(next_text, next_letter)
+            page.add_table_header(previous_link, next_link)
+            self.pages.append(page)
+
+    def _build_alphabet_catalog(self) -> None:
+        """
+        Builds a wiki alphabet catalog from the repo.
+        :return: None
+        """
+        page = MarkdownPage("Alphabetical Language Catalog")
+        alphabetical_list = self._get_sorted_letters()
+        page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
+        for letter in alphabetical_list:
+            letter_link = self._build_wiki_link(letter.capitalize(), letter.capitalize())
+            languages_by_letter = self.repo.get_languages_by_letter(letter)
+            num_of_languages = len(languages_by_letter)
+            num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
+            num_of_tests = sum([1 if language.get_test_file_path() else 0 for language in languages_by_letter])
+            page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests))
+        page.add_table_row("**Totals**", str(len(self.repo.languages)), str(self.repo.total_snippets), str(self.repo.total_tests))
+        self.pages.append(page)

@@ -18,6 +18,7 @@ class Repo:
         self.total_tests: int = 0
         self._collect_languages()
         self._analyze_repo()
+        self._organize_repo()
 
     def _collect_languages(self) -> None:
         """
@@ -37,6 +38,13 @@ class Repo:
         for language in self.languages:
             self.total_snippets += language.total_snippets
             self.total_tests += 1 if language.test_file_path else 0
+
+    def _organize_repo(self) -> None:
+        """
+        Sorts the repo in alphabetical order by language name.
+        :return: None
+        """
+        self.languages.sort(key=lambda lang: lang.name.casefold())
 
     def get_languages_by_letter(self, letter: str) -> list:
         """
@@ -64,6 +72,7 @@ class LanguageCollection:
         self.name: str = name
         self.path: str = path
         self.file_list: list[str] = file_list
+        self.first_letter: str = name[0]
         self.sample_programs: list[SampleProgram] = list()
         self.test_file_path: Optional[str] = None
         self.read_me_path: Optional[str] = None
