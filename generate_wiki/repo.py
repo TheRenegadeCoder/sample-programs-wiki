@@ -1,9 +1,11 @@
 import os
-import pathlib
 from typing import Optional
 
 
 class Repo:
+    """
+    An object representing the Sample Programs repository.
+    """
     def __init__(self, source_dir):
         self.source_dir: str = source_dir
         self.languages: list[LanguageCollection] = list()
@@ -31,12 +33,21 @@ class Repo:
             self.total_snippets += language.total_snippets
             self.total_tests += 1 if language.test_file_path else 0
 
-    def get_languages_by_letter(self, letter):
+    def get_languages_by_letter(self, letter: str) -> list:
+        """
+        A utility method for retrieving all language collections that start with a particular letter.
+
+        :param letter: a character to search by
+        :return: a list of programming languages starting with the provided letter
+        """
         language_list = [language for language in self.languages if language.name.startswith(letter)]
         return sorted(language_list, key=lambda s: s.name.casefold())
 
 
 class LanguageCollection:
+    """
+    An object representing a collection of sample programs files for a particular programming language.
+    """
     def __init__(self, name: str, path: str, file_list: list[str]):
         self.name: str = name
         self.path: str = path
@@ -59,7 +70,7 @@ class LanguageCollection:
         for file in self.file_list:
             file_name, file_ext = os.path.splitext(file)
             if file_ext not in (".md", "", ".yml"):
-                self.sample_programs.append(SampleProgram(self.path, file))
+                self.sample_programs.append(SampleProgram(self.path, file, self.name))
             elif file_ext == ".yml":
                 self.test_file_path = file
 
@@ -77,9 +88,10 @@ class SampleProgram:
     """
     An object representing a sample program in the repo.
     """
-    def __init__(self, path: str, file_name: str):
+    def __init__(self, path: str, file_name: str, language: str):
         self.path = path
         self.file_name = file_name
+        self.language = language
 
     def get_size(self) -> int:
         """
@@ -91,7 +103,7 @@ class SampleProgram:
 
     def get_language(self) -> str:
         """
-        Determines the language of the sample program from the folder it is contained within.
+        Retrieves the language name for this sample program.
         :return: the language of the sample program
         """
-        return pathlib.PurePath(self.path).name
+        return self.language
