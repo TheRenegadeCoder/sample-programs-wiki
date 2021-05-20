@@ -6,7 +6,15 @@ from generate_wiki.repo import Repo, LanguageCollection
 
 
 class Wiki:
-    def __init__(self, repo):
+    """
+    An object representing a GitHub wiki.
+    """
+
+    def __init__(self, repo: Repo):
+        """
+        Constructs an instance of a Wiki.
+        :param repo: a GitHub repository object
+        """
         self.repo: Repo = repo
         self.wiki_url_base: str = "/TheRenegadeCoder/sample-programs/wiki/"
         self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/main/archive/"
@@ -15,7 +23,7 @@ class Wiki:
         self.pages: list[MarkdownPage] = list()
 
     @staticmethod
-    def verify_link(url):
+    def verify_link(url: str) -> bool:
         """
         Verifies that a URL is a valid URL.
         :param url: a website URL
@@ -52,7 +60,7 @@ class Wiki:
         """
         return create_md_link(text, self.repo_url_base + letter + "/" + language)
 
-    def _build_language_link(self, language):
+    def _build_language_link(self, language: str) -> str:
         """
         A helper method which creates a link to a sample program language page.
         (e.g., https://sample-programs.therenegadecoder.com/languages/c/)
@@ -66,7 +74,7 @@ class Wiki:
             markdown_url = create_md_link("Here", test_url)
         return markdown_url
 
-    def _build_issue_link(self, language: str):
+    def _build_issue_link(self, language: str) -> str:
         """
         A helper method which creates a link to all issues matching that language.
         :param language: the language to search for issues
@@ -75,7 +83,7 @@ class Wiki:
         lang_query = language.replace("-", "+")
         return create_md_link("Here", self.issue_url_base + lang_query)
 
-    def _build_test_link(self, language: LanguageCollection, letter: str):
+    def _build_test_link(self, language: LanguageCollection, letter: str) -> str:
         """
         A helper method which creates a link to the test file for a given language collection.
         :param language: a language collection
@@ -123,7 +131,7 @@ class Wiki:
             page.add_table_header(previous_link, next_link)
             self.pages.append(page)
 
-    def build_alphabet_page(self, letter):
+    def build_alphabet_page(self, letter: str):
         page = MarkdownPage(letter.capitalize())
         introduction = """The following table contains all the existing languages
                     in the repository that start with the letter %s:""" % letter.capitalize()

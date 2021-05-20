@@ -7,7 +7,7 @@ class Repo:
     An object representing the Sample Programs repository.
     """
 
-    def __init__(self, source_dir):
+    def __init__(self, source_dir: str) -> None:
         """
         Constructs an instance of Repo.
         :param source_dir: the location of the repo (e.g., C://.../sample-programs)
@@ -54,7 +54,7 @@ class LanguageCollection:
     An object representing a collection of sample programs files for a particular programming language.
     """
 
-    def __init__(self, name: str, path: str, file_list: list[str]):
+    def __init__(self, name: str, path: str, file_list: list[str]) -> None:
         """
         Constructs an instance of LanguageCollection.
         :param name: the name of the language (e.g., Python)
@@ -72,7 +72,7 @@ class LanguageCollection:
         self._collect_sample_programs()
         self._analyze_language_collection()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name + ";" + str(self.total_snippets) + ";" + str(self.total_dir_size)
 
     def _collect_sample_programs(self) -> None:
