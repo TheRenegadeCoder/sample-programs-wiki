@@ -75,10 +75,16 @@ class Wiki:
         lang_query = language.replace("-", "+")
         return create_md_link("Here", self.issue_url_base + lang_query)
 
-    def build_test_link(self, language: LanguageCollection, letter: str):
-        file_name = language.get_test_file_path()
-        if file_name:
-            file_path = self.repo_url_base + letter + "/" + language.name + "/" + file_name
+    def _build_test_link(self, language: LanguageCollection, letter: str):
+        """
+        A helper method which creates a link to the test file for a given language collection.
+        :param language: a language collection
+        :param letter: the first letter of the language
+        :return: a markdown link to a test file if it exists; an empty string otherwise
+        """
+        test_file_path = language.test_file_path
+        if test_file_path:
+            file_path = self.repo_url_base + letter + "/" + language.name + "/" + os.path.basename(test_file_path)
             file_path_link = create_md_link("Here", file_path)
         else:
             file_path_link = ""
@@ -131,7 +137,7 @@ class Wiki:
             language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
             tag_link = self._build_language_link(language.name)
             issues_link = self._build_issue_link(language.name)
-            tests_link = self.build_test_link(language, letter)
+            tests_link = self._build_test_link(language, letter)
             page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))
         page.add_table_row("**Totals**", "", "", "", str(total_snippets))
         page.add_section_break()
