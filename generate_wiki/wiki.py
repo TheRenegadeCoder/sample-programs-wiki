@@ -107,7 +107,7 @@ class Wiki:
         page = MarkdownPage(letter.capitalize())
         introduction = """The following table contains all the existing languages
                     in the repository that start with the letter %s:""" % letter.capitalize()
-        page.add_row(introduction)
+        page.add_content(introduction)
         page.add_section_break()
         page.add_table_header("Language", "Article(s)", "Issue(s)", "Test(s)", "# of Snippets")
         languages_by_letter = self.repo.get_languages_by_letter(letter)

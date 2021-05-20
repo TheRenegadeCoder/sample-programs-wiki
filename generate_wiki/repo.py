@@ -3,7 +3,8 @@ The repo module contains all the classes need to represent the Sample Programs r
 This file was designed with the intent of creating read-only objects that fully
 represent the underlying repo. Ideally, classes that make use of these objects
 should not need to know how they were generated. For example, we do not want users
-to poke around the source directory that was used to generate these files.
+to poke around the source directory that was used to generate these files. As a result,
+users should make use of the public fields only.
 """
 
 import os
@@ -63,10 +64,10 @@ class Repo:
         """
         language_list = [language for language in self.languages if language.name.startswith(letter)]
         return sorted(language_list, key=lambda s: s.name.casefold())
-    
+
     def get_sorted_language_letters(self):
         """
-        A helper method which generates a list of sorted letters from the sample programs archive.
+        A utility method which generates a list of sorted letters from the sample programs archive.
         :return: a sorted list of letters
         """
         unsorted_letters = os.listdir(self._source_dir)

@@ -25,8 +25,9 @@ class MarkdownPage:
     def _build_page(self):
         return "\n".join(self.content)
 
-    def add_row(self, row: str):
-        self.content.append(row)
+    def add_content(self, *lines: str):
+        for line in lines:
+            self.content.append(line)
 
     def add_table_header(self, *args):
         column_separator = " | "
@@ -42,6 +43,9 @@ class MarkdownPage:
 
     def add_section_break(self):
         self.content.append("")
+
+    def add_list_item(self, item: str, depth: int = 0):
+        self.content.append(f"{' ' * depth}- {item}")
 
     def output_page(self, dump_dir, file_name):
         pathlib.Path(dump_dir).mkdir(parents=True, exist_ok=True)
