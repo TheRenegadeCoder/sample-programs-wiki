@@ -32,7 +32,7 @@ number of scripts per language as well as linking to articles and issues.
 At this time, the wiki generator is hardcoded for the Sample Programs repo. In order to run it, you can install it as a
 package using `pip`:
 
-`pip install generate_wiki`
+`pip install generate_docs`
 
 After that, you'll need a copy of the Sample Programs repo:
 
@@ -42,12 +42,16 @@ Finally, you can build the wiki using the following command:
 
 `wikig /path/to/sample-programs/repo/archive`
 
+Likewise, you can build the READMEs using the following command:
+
+`wikir /path/to/sample-programs/repo/archive`
+
 Alternatively, you can clone this repo to run the `generate_wiki.py` script directly:
 
-`python generate-wiki.py /path/to/sample-programs/repo/archive`
+`python generator.py /path/to/sample-programs/repo/archive`
 
 Both solutions are designed to handle repo exploration from the `/archive/` directory. If successful, you should begin
 to see print statements for the various links under test for The Renegade Coder. When finished, you'll have a `/wiki/`
-directory next to your script which contains the wiki.
+directory next to your script which contains the wiki. Likewise, all the READMEs should be updated.
 
 At this point, you can push the wiki directly to the Sample Programs wiki.
