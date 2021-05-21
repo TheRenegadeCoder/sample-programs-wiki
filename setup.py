@@ -11,7 +11,7 @@ setuptools.setup(
     description="A docs generation package for the Sample Programs repo",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/TheRenegadeCoder/sample-programs-wiki-generator",
+    url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
     packages=setuptools.find_packages(),
     entry_points={
         "console_scripts": [
