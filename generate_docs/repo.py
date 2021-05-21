@@ -100,6 +100,7 @@ class LanguageCollection:
         self._collect_sample_programs()
         self._analyze_language_collection()
         self._generate_urls()
+        self._organize_collection()
 
     def __str__(self) -> str:
         return self.name + ";" + str(self.total_snippets) + ";" + str(self.total_dir_size)
@@ -130,6 +131,9 @@ class LanguageCollection:
 
     def _generate_urls(self) -> None:
         self.sample_program_url = f"https://sample-programs.therenegadecoder.com/languages/{self.name}"
+
+    def _organize_collection(self):
+        self.sample_programs.sort(key=lambda program: program.language.casefold())
 
 
 class SampleProgram:
