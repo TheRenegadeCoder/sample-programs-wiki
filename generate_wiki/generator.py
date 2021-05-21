@@ -12,52 +12,55 @@ class Generator:
     """
     def __init__(self, source_dir):
         self.source_dir = source_dir
-        self.repo: Optional[Repo] = None
-        self.wiki: Optional[Wiki] = None
-        self.readme_catalog: Optional[ReadMeCatalog] = None
+        self.repo: Repo = Repo(self.source_dir)
 
-    def build(self) -> None:
+    def generate_wiki(self) -> None:
         """
-        Builds the wiki and README objects.
+        Builds and outputs the wiki.
         :return: None
         """
-        self.repo = Repo(self.source_dir)
-        self._build_wiki()
-        self._build_readme_catalog()
-        self._output_documents()
+        wiki = Wiki(self.repo)
+        for page in wiki.pages:
+            page.output_page("wiki")
 
-    def _build_wiki(self) -> None:
+    def generate_readmes(self) -> None:
         """
-        Builds the wiki object from the repo object.
-        :return: None
-        """
-        self.wiki = Wiki(self.repo)
-
-    def _build_readme_catalog(self) -> None:
-        """
-        Builds the readme object from the repo object.
+        Builds and outputs the READMEs.
         :return:
         """
-        self.readme_catalog = ReadMeCatalog(self.repo)
-
-    def _output_documents(self) -> None:
-        """
-        Outputs all documents associated with the wiki and readme objects.
-        :return: None
-        """
-        for page in self.wiki.pages:
-            page.output_page("wiki")
-        for language, page in self.readme_catalog.pages.items():
+        readme_catalog = ReadMeCatalog(self.repo)
+        for language, page in readme_catalog.pages.items():
             page.output_page(f"{self.source_dir}/{language[0]}/{language}")
 
 
-def main():
+def _create_generator() -> Optional[Generator]:
+    """
+    Creates the generator object from
+    :return:
+    """
     if len(sys.argv) > 1:
         generator = Generator(sys.argv[1])
-        generator.build()
+        return generator
     else:
         print("Please supply an input path")
+        exit(1)
+
+
+def main_wiki():
+    """
+    Builds the wiki.
+    :return: None
+    """
+    _create_generator().generate_wiki()
+
+
+def main_readmes():
+    """
+    Builds the READMEs.
+    :return: None
+    """
+    _create_generator().generate_readmes()
 
 
 if __name__ == '__main__':
-    main()
+    main_wiki()
