@@ -64,3 +64,4 @@ def main_readmes():
 
 if __name__ == '__main__':
     main_wiki()
+    main_readmes()

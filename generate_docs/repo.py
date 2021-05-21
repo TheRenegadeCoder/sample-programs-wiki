@@ -83,7 +83,7 @@ class LanguageCollection:
     def __init__(self, name: str, path: str, file_list: list[str]) -> None:
         """
         Constructs an instance of LanguageCollection.
-        :param name: the name of the language (e.g., Python)
+        :param name: the name of the language (e.g., python)
         :param path: the path of the language (e.g., .../archive/p/python/)
         :param file_list: the list of files in language collection
         """
@@ -100,6 +100,7 @@ class LanguageCollection:
         self._collect_sample_programs()
         self._analyze_language_collection()
         self._generate_urls()
+        self._organize_collection()
 
     def __str__(self) -> str:
         return self.name + ";" + str(self.total_snippets) + ";" + str(self.total_dir_size)
@@ -130,6 +131,28 @@ class LanguageCollection:
 
     def _generate_urls(self) -> None:
         self.sample_program_url = f"https://sample-programs.therenegadecoder.com/languages/{self.name}"
+
+    def _organize_collection(self):
+        self.sample_programs.sort(key=lambda program: program.language.casefold())
+
+    def get_readable_name(self):
+        """
+        Generates as close to the proper language name as possible given a language
+        name in plain text separated by hyphens
+            EX: google-apps-script -> Google Apps Script
+            EX: c-sharp -> C#
+        :return: a readable representation of the language name
+        """
+        text_to_symbol = {
+            "plus": "+",
+            "sharp": "#",
+            "star": r"\*"
+        }
+        tokens = [text_to_symbol.get(token, token) for token in self.name.split("-")]
+        if any(token in text_to_symbol.values() for token in tokens):
+            return "".join(tokens).title()
+        else:
+            return " ".join(tokens).title()
 
 
 class SampleProgram:
