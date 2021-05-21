@@ -135,6 +135,9 @@ class LanguageCollection:
     def _organize_collection(self):
         self.sample_programs.sort(key=lambda program: program.language.casefold())
 
+    def get_readable_name(self):
+        return " ".join(self.name.split("-")).title()
+
 
 class SampleProgram:
     """

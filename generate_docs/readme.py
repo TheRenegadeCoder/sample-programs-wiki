@@ -3,8 +3,8 @@ from generate_docs.repo import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> str:
-    introduction = f"Welcome to Sample Programs in {language.name.capitalize()}!"
-    docs = f"""To find documentation related to the {language.name.capitalize()} 
+    introduction = f"Welcome to Sample Programs in {language.get_readable_name()}!"
+    docs = f"""To find documentation related to the {language.get_readable_name()} 
     code in this repo, look [here]({language.sample_program_url}).
     """
     interlude_valid = "Otherwise, below you'll find a list of code snippets in this collection."
@@ -30,7 +30,7 @@ def _generate_program_list(language: LanguageCollection) -> list:
     list_items = list()
     for program in language.sample_programs:
         readable_name = program.normalized_name.replace("-", " ").title()
-        doc_link = build_doc_link(program, f"{readable_name} in {program.language.capitalize()}")
+        doc_link = build_doc_link(program, f"{readable_name} in {language.get_readable_name()}")
         list_items.append(f"- {doc_link}")
     return list_items
 
