@@ -1,1 +1,0 @@
-name = "generate_wiki"

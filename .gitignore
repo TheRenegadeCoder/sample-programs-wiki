@@ -107,5 +107,5 @@ venv.bak/
 .idea/
 
 # Wiki
-/generate_wiki/wiki/
-/generate_wiki/readme/
+/generate_docs/wiki/
+/generate_docs/readme/

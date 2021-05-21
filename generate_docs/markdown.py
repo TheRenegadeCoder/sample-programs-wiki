@@ -3,7 +3,7 @@ import pathlib
 from urllib.error import HTTPError
 from urllib import request
 
-from generate_wiki.repo import LanguageCollection, SampleProgram
+from generate_docs.repo import LanguageCollection, SampleProgram
 
 
 def create_md_link(text: str, url: str) -> str:

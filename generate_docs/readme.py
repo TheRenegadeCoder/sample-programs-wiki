@@ -1,5 +1,5 @@
-from generate_wiki.markdown import MarkdownPage, build_doc_link, verify_link
-from generate_wiki.repo import Repo, LanguageCollection
+from generate_docs.markdown import MarkdownPage, build_doc_link, verify_link
+from generate_docs.repo import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> str:

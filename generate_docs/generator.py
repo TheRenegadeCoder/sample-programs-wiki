@@ -1,9 +1,9 @@
 import sys
 from typing import Optional
 
-from generate_wiki.readme import ReadMeCatalog
-from generate_wiki.repo import Repo
-from generate_wiki.wiki import Wiki
+from generate_docs.readme import ReadMeCatalog
+from generate_docs.repo import Repo
+from generate_docs.wiki import Wiki
 
 
 class Generator:

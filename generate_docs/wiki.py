@@ -1,7 +1,7 @@
 import os
 
-from generate_wiki.markdown import MarkdownPage, create_md_link, build_language_link
-from generate_wiki.repo import Repo, LanguageCollection
+from generate_docs.markdown import MarkdownPage, create_md_link, build_language_link
+from generate_docs.repo import Repo, LanguageCollection
 
 
 class Wiki:
