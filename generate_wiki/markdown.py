@@ -78,8 +78,7 @@ class MarkdownPage:
         return "\n".join(self.content)
 
     def add_content(self, *lines: str):
-        for line in lines:
-            self.content.append(line)
+        self.content.extend(lines)
 
     def add_table_header(self, *args):
         column_separator = " | "

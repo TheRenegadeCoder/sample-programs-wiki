@@ -48,7 +48,7 @@ class Generator:
         for page in self.wiki.pages:
             page.output_page("wiki")
         for language, page in self.readme_catalog.pages.items():
-            page.output_page(f"{self.source_dir}/{language}")
+            page.output_page(f"{self.source_dir}/{language[0]}/{language}")
 
 
 def main():
