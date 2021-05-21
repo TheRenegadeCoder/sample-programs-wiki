@@ -5,15 +5,15 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="generate_docs",
-    version="1.2.0",
+    version="2.0.0",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
-    description="A wiki generation package for the Sample Programs repo",
+    description="A docs generation package for the Sample Programs repo",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/TheRenegadeCoder/sample-programs-wiki-generator",
     packages=setuptools.find_packages(),
-    entry_points = {
+    entry_points={
         "console_scripts": [
             'wikig = generate_docs.generator:main_wiki',
             'wikir = generate_docs.generator:main_readmes',
