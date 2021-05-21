@@ -133,7 +133,7 @@ class LanguageCollection:
         self.sample_program_url = f"https://sample-programs.therenegadecoder.com/languages/{self.name}"
 
     def _organize_collection(self):
-        self.sample_programs.sort(key=lambda program: program.language.casefold())
+        self.sample_programs.sort(key=lambda program: program.normalized_name.casefold())
 
     def get_readable_name(self):
         """
