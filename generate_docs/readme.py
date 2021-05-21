@@ -56,7 +56,7 @@ class ReadMeCatalog:
         :return: None
         """
         page = MarkdownPage("README")
-        page.add_content(f"# Sample Programs in {language.name.capitalize()}")
+        page.add_content(f"# Sample Programs in {language.get_readable_name()}")
         page.add_section_break()
         page.add_content(_get_intro_text(language))
         page.add_section_break()
