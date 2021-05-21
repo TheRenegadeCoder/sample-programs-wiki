@@ -1,16 +1,24 @@
-from generate_wiki.markdown import MarkdownPage, build_doc_link
+from generate_wiki.markdown import MarkdownPage, build_doc_link, verify_link
 from generate_wiki.repo import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> str:
-    # TODO: need to think about languages that don't exist in documentation
-    return f"""Welcome to Sample Programs in {language.name.capitalize()}! To find 
-    documentation related to the {language.name.capitalize()} code in this repo, look 
-    [here]({language.sample_program_url}). Otherwise, below you'll find a list of code 
-    snippets in this collection. Code snippets preceded by :warning: link to a GitHub 
+    introduction = f"Welcome to Sample Programs in {language.name.capitalize()}!"
+    docs = f"""To find documentation related to the {language.name.capitalize()} 
+    code in this repo, look [here]({language.sample_program_url}).
+    """
+    interlude_valid = "Otherwise, below you'll find a list of code snippets in this collection."
+    interlude_invalid = "Below, you'll find a list of code snippets in this collection."
+    emojis = """
+    Code snippets preceded by :warning: link to a GitHub 
     issue query featuring a possible article request issue. If an article request issue 
     doesn't exist, we encourage you to create one. Meanwhile, code snippets preceded 
-    by :white_check_mark: link to an existing article which provides further documentation."""
+    by :white_check_mark: link to an existing article which provides further documentation.
+    """
+    if not verify_link(language.sample_program_url):
+        return " ".join([introduction, interlude_invalid, emojis])
+    else:
+        return " ".join([introduction, docs, interlude_valid, emojis])
 
 
 def _generate_program_list(language: LanguageCollection) -> list:
