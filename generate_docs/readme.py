@@ -35,6 +35,11 @@ def _generate_program_list(language: LanguageCollection) -> list:
     return list_items
 
 
+def _generate_credit():
+    return """This page was generated automatically by the Sample Programs Docs Generator. 
+    Find out how to support this project [here](https://github.com/TheRenegadeCoder/sample-programs-docs-generator)."""
+
+
 class ReadMeCatalog:
     """
     An representation of the collection of READMEs in the Sample Programs repo.
@@ -62,6 +67,7 @@ class ReadMeCatalog:
         page.add_section_break()
         page.add_content(*_generate_program_list(language))
         page.add_section_break()
+        page.add_content(_generate_credit())
         self.pages[language.name] = page
 
     def _build_readmes(self) -> None:
