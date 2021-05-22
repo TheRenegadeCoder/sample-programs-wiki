@@ -7,18 +7,19 @@ def _get_intro_text(language: LanguageCollection) -> str:
     docs = f"""To find documentation related to the {language.get_readable_name()} 
     code in this repo, look [here]({language.sample_program_url}).
     """
-    interlude_valid = "Otherwise, below you'll find a list of code snippets in this collection."
-    interlude_invalid = "Below, you'll find a list of code snippets in this collection."
-    emojis = """
+    if not verify_link(language.sample_program_url):
+        return introduction
+    else:
+        return " ".join([introduction, docs])
+
+
+def _get_sample_programs_text() -> str:
+    return """Below, you'll find a list of code snippets in this collection.
     Code snippets preceded by :warning: link to a GitHub 
     issue query featuring a possible article request issue. If an article request issue 
     doesn't exist, we encourage you to create one. Meanwhile, code snippets preceded 
     by :white_check_mark: link to an existing article which provides further documentation.
     """
-    if not verify_link(language.sample_program_url):
-        return " ".join([introduction, interlude_invalid, emojis])
-    else:
-        return " ".join([introduction, docs, interlude_valid, emojis])
 
 
 def _generate_program_list(language: LanguageCollection) -> list:
@@ -61,13 +62,25 @@ class ReadMeCatalog:
         :return: None
         """
         page = MarkdownPage("README")
+
+        # Introduction
         page.add_content(f"# Sample Programs in {language.get_readable_name()}")
         page.add_section_break()
         page.add_content(_get_intro_text(language))
         page.add_section_break()
+
+        # Sample Programs List
+        page.add_content("## Sample Programs List")
+        page.add_section_break()
+        page.add_content(_get_sample_programs_text())
+        page.add_section_break()
         page.add_content(*_generate_program_list(language))
         page.add_section_break()
+
+        # Testing
+        page.add_content("## Testing")
         page.add_content(_generate_credit())
+
         self.pages[language.name] = page
 
     def _build_readmes(self) -> None:
