@@ -1,12 +1,11 @@
-from generate_docs.markdown import MarkdownPage, build_doc_link, verify_link
+from generate_docs.markdown import MarkdownPage, build_doc_link, verify_link, build_req_link
 from generate_docs.repo import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> str:
     introduction = f"Welcome to Sample Programs in {language.get_readable_name()}!"
     docs = f"""To find documentation related to the {language.get_readable_name()} 
-    code in this repo, look [here]({language.sample_program_url}).
-    """
+code in this repo, look [here]({language.sample_program_url})."""
     if not verify_link(language.sample_program_url):
         return introduction
     else:
@@ -31,7 +30,8 @@ def _generate_program_list(language: LanguageCollection) -> list:
     for program in language.sample_programs:
         readable_name = program.normalized_name.replace("-", " ").title()
         doc_link = build_doc_link(program, f"{readable_name} in {language.get_readable_name()}")
-        list_items.append(f"- {doc_link}")
+        req_link = build_req_link(program)
+        list_items.append(f"- {doc_link} [{req_link}]")
     return list_items
 
 

@@ -1,5 +1,6 @@
 import os
 import pathlib
+import sys
 from urllib.error import HTTPError
 from urllib import request
 
@@ -43,6 +44,21 @@ def build_doc_link(sample_program: SampleProgram, text: str) -> str:
         markdown_url = f":warning: {create_md_link(text, sample_program.sample_program_issue_url)}"
     else:
         markdown_url = f":white_check_mark: {create_md_link(text, sample_program.sample_program_doc_url)}"
+    return markdown_url
+
+
+def build_req_link(sample_program: SampleProgram) -> str:
+    """
+    A handy abstraction for the create_md_link() method which creates a link to a sample programs docs page.
+    (e.g., https://sample-programs.therenegadecoder.com/projects/even-odd/c/)
+    :param sample_program: the sample program
+    :return: a markdown link to the docs page if it exists; an empty string otherwise
+    """
+    if not verify_link(sample_program.sample_program_req_url):
+        print(f"{sample_program.file_name} is not currently supported by this repo.")
+        sys.exit(1)
+    else:
+        markdown_url = f"{create_md_link('Requirements', sample_program.sample_program_req_url)}"
     return markdown_url
 
 

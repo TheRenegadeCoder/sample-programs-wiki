@@ -179,6 +179,7 @@ class SampleProgram:
         self.file_name = file_name
         self.language = language
         self.sample_program_doc_url: Optional[str] = None
+        self.sample_program_req_url: Optional[str] = None
         self.sample_program_issue_url: Optional[str] = None
         self.normalized_name: Optional[str] = None
         self._generate_urls()
@@ -215,8 +216,11 @@ class SampleProgram:
 
         self.normalized_name = self._normalize_program_name()
 
+        # req URL
+        self.sample_program_req_url = f"{doc_url_base}/{self.normalized_name}"
+
         # doc URL
-        self.sample_program_doc_url = f"{doc_url_base}/{self.normalized_name}/{self.language}"
+        self.sample_program_doc_url = f"{self.sample_program_req_url}/{self.language}"
 
         # issue URL
         program = self.normalized_name.replace("-", "+")
