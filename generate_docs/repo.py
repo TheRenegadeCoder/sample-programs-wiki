@@ -206,7 +206,7 @@ class SampleProgram:
         elif len(stem.split("_")) > 1:
             url = stem.replace("_", "-")
         else:
-            url = "-".join(re.findall('[a-zA-Z][^A-Z]*', stem)).lower()
+            url = re.sub('((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z]))', r'-\1', stem).lower()
         return url
 
     def _generate_urls(self) -> None:
@@ -217,7 +217,10 @@ class SampleProgram:
         self.normalized_name = self._normalize_program_name()
 
         # req URL
-        self.sample_program_req_url = f"{doc_url_base}/{self.normalized_name}"
+        if "export" in self.normalized_name or "import" in self.normalized_name:
+            self.sample_program_req_url = f"{doc_url_base}/import-export"
+        else:
+            self.sample_program_req_url = f"{doc_url_base}/{self.normalized_name}"
 
         # doc URL
         self.sample_program_doc_url = f"{self.sample_program_req_url}/{self.language}"

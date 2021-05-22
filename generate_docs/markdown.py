@@ -58,8 +58,7 @@ def build_req_link(sample_program: SampleProgram) -> str:
         print(f"{sample_program.file_name} is not currently supported by this repo.")
         sys.exit(1)
     else:
-        markdown_url = f"{create_md_link('Requirements', sample_program.sample_program_req_url)}"
-    return markdown_url
+        return f"{create_md_link('Requirements', sample_program.sample_program_req_url)}"
 
 
 def verify_link(url: str) -> bool:
