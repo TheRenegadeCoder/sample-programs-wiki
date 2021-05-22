@@ -206,6 +206,7 @@ class SampleProgram:
         elif len(stem.split("_")) > 1:
             url = stem.replace("_", "-")
         else:
+            # TODO: this is brutal. At some point, we should loop in the glotter test file.
             url = re.sub('((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z]))', r'-\1', stem).lower()
         return url
 
