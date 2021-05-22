@@ -9,6 +9,7 @@ users should make use of the public fields only.
 
 import os
 import re
+import yaml
 from typing import Optional
 
 
@@ -135,7 +136,7 @@ class LanguageCollection:
     def _organize_collection(self):
         self.sample_programs.sort(key=lambda program: program.normalized_name.casefold())
 
-    def get_readable_name(self):
+    def get_readable_name(self) -> str:
         """
         Generates as close to the proper language name as possible given a language
         name in plain text separated by hyphens
@@ -154,6 +155,13 @@ class LanguageCollection:
         else:
             return " ".join(tokens).title()
 
+    def get_test_data(self) -> Optional[dict]:
+        test_data = None
+        if self.test_file_path:
+            with open(os.path.join(self.path, self.test_file_path)) as test_file:
+                test_data = yaml.safe_load(test_file)
+        return test_data
+
 
 class SampleProgram:
     """
@@ -171,6 +179,7 @@ class SampleProgram:
         self.file_name = file_name
         self.language = language
         self.sample_program_doc_url: Optional[str] = None
+        self.sample_program_req_url: Optional[str] = None
         self.sample_program_issue_url: Optional[str] = None
         self.normalized_name: Optional[str] = None
         self._generate_urls()
@@ -193,11 +202,12 @@ class SampleProgram:
     def _normalize_program_name(self):
         stem = os.path.splitext(self.file_name)[0]
         if len(stem.split("-")) > 1:
-            url = stem
+            url = stem.lower()
         elif len(stem.split("_")) > 1:
-            url = stem.replace("_", "-")
+            url = stem.replace("_", "-").lower()
         else:
-            url = "-".join(re.findall('[a-zA-Z][^A-Z]*', stem)).lower()
+            # TODO: this is brutal. At some point, we should loop in the glotter test file.
+            url = re.sub('((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z]))', r'-\1', stem).lower()
         return url
 
     def _generate_urls(self) -> None:
@@ -207,8 +217,14 @@ class SampleProgram:
 
         self.normalized_name = self._normalize_program_name()
 
+        # req URL
+        if "export" in self.normalized_name or "import" in self.normalized_name:
+            self.sample_program_req_url = f"{doc_url_base}/import-export"
+        else:
+            self.sample_program_req_url = f"{doc_url_base}/{self.normalized_name}"
+
         # doc URL
-        self.sample_program_doc_url = f"{doc_url_base}/{self.normalized_name}/{self.language}"
+        self.sample_program_doc_url = f"{self.sample_program_req_url}/{self.language}"
 
         # issue URL
         program = self.normalized_name.replace("-", "+")
