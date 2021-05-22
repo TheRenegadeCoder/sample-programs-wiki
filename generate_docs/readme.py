@@ -55,11 +55,19 @@ container:
 See the [Glotter project](https://github.com/auroq/glotter) for more information on how to create a testinfo file. 
 """
     else:
-        return str(test_data)
+        return f"""The following list shares details about what we're using to test all Sample Programs in 
+{language.get_readable_name()}.
+        
+- Docker Image: {test_data["container"]["image"]}
+- Docker Tag: {test_data["container"]["tag"]}
+
+See the [Glotter project](https://github.com/auroq/glotter) for more information on how we handle testing. 
+"""
 
 
 def _generate_credit():
-    return """This page was generated automatically by the Sample Programs Docs Generator. 
+    return """---
+This page was generated automatically by the Sample Programs Docs Generator. 
 Find out how to support this project [here](https://github.com/TheRenegadeCoder/sample-programs-docs-generator)."""
 
 
