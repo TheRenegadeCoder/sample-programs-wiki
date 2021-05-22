@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="generate_docs",
-    version="2.1.0",
+    version="2.2.0",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
     description="A docs generation package for the Sample Programs repo",
