@@ -202,9 +202,9 @@ class SampleProgram:
     def _normalize_program_name(self):
         stem = os.path.splitext(self.file_name)[0]
         if len(stem.split("-")) > 1:
-            url = stem
+            url = stem.lower()
         elif len(stem.split("_")) > 1:
-            url = stem.replace("_", "-")
+            url = stem.replace("_", "-").lower()
         else:
             # TODO: this is brutal. At some point, we should loop in the glotter test file.
             url = re.sub('((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z]))', r'-\1', stem).lower()
