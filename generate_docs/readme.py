@@ -79,6 +79,7 @@ class ReadMeCatalog:
 
         # Testing
         page.add_content("## Testing")
+        page.add_content(str(language.get_test_data()))
         page.add_content(_generate_credit())
 
         self.pages[language.name] = page

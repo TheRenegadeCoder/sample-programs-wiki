@@ -136,7 +136,7 @@ class LanguageCollection:
     def _organize_collection(self):
         self.sample_programs.sort(key=lambda program: program.normalized_name.casefold())
 
-    def get_readable_name(self):
+    def get_readable_name(self) -> str:
         """
         Generates as close to the proper language name as possible given a language
         name in plain text separated by hyphens
@@ -154,6 +154,13 @@ class LanguageCollection:
             return "".join(tokens).title()
         else:
             return " ".join(tokens).title()
+
+    def get_test_data(self) -> Optional[dict]:
+        test_data = None
+        if self.test_file_path:
+            with open(os.path.join(self.path, self.test_file_path)) as test_file:
+                test_data = yaml.safe_load(test_file)
+        return test_data
 
 
 class SampleProgram:
