@@ -13,6 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
     packages=setuptools.find_packages(),
+    install_requires=[
+        "PyYAML~=5.4.1"
+    ],
     entry_points={
         "console_scripts": [
             'wikig = generate_docs.generator:main_wiki',

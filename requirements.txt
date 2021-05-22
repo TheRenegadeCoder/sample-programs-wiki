@@ -1,2 +1,0 @@
-setuptools~=56.2.0
-PyYAML~=5.4.1
