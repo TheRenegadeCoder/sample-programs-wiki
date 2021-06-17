@@ -33,12 +33,24 @@ def get_youtube_video(entry):
         return target.find_next_sibling().find_all("a")[-1]["href"]
 
 
+def get_slug(title: str, sep: str):
+    return title.split(":")[0][:-10].lower().replace(" ", sep)
+
+
 def get_challenge(title: str):
-    slug = title.split(":")[0][:-10].lower().replace(" ", "-")
+    slug = get_slug(title, "-")
     base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/challenges/"
     request = requests.get(f"{base}{slug}")
     if request.status_code == 200:
         return f"{base}{slug}"
+
+
+def get_notebook(title: str):
+    slug = get_slug(title, "_")
+    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/notebooks/"
+    request = requests.get(f"{base}{slug}.ipynb")
+    if request.status_code == 200:
+        return f"{base}{slug}.ipynb"
 
 
 class HowTo:
@@ -73,5 +85,7 @@ class HowTo:
                 youtube = f"[Video]({youtube_url})" if youtube_url else ""
                 challenge_url = get_challenge(entry.title)
                 challenge = f"[Challenge]({challenge_url})" if challenge_url else ""
-                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, challenge, "")
+                notebook_url = get_notebook(entry.title)
+                notebook = f"[Notebook]({notebook_url})" if notebook_url else ""
+                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, challenge, notebook)
                 index += 1
