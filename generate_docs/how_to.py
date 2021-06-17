@@ -58,8 +58,9 @@ class HowTo:
     def build_table(self):
         index = 1
         for entry in self.feed:
-            article = f"[Article]({entry.link})"
-            youtube_url = get_youtube_video(entry)
-            youtube = f"[Video]({youtube_url})" if youtube_url else ""
-            self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, "", "")
-            index += 1
+            if "Code Snippets" not in entry.title:
+                article = f"[Article]({entry.link})"
+                youtube_url = get_youtube_video(entry)
+                youtube = f"[Video]({youtube_url})" if youtube_url else ""
+                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, "", "")
+                index += 1
