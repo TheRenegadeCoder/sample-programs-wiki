@@ -109,3 +109,5 @@ venv.bak/
 # Wiki
 /generate_docs/wiki/
 /generate_docs/readme/
+generate_docs/how_to/README.md
+generate_docs/README.md
