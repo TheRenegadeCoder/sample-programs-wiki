@@ -1,5 +1,6 @@
 from typing import Optional
 from bs4 import BeautifulSoup
+import requests
 import feedparser
 
 from generate_docs.markdown import MarkdownPage
@@ -32,6 +33,14 @@ def get_youtube_video(entry):
         return target.find_next_sibling().find_all("a")[-1]["href"]
 
 
+def get_challenge(title: str):
+    slug = title.split(":")[0][:-10].lower().replace(" ", "-")
+    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/challenges/"
+    request = requests.get(f"{base}{slug}")
+    if request.status_code == 200:
+        return f"{base}{slug}"
+
+
 class HowTo:
     def __init__(self):
         self.page: Optional[MarkdownPage] = None
@@ -62,5 +71,7 @@ class HowTo:
                 article = f"[Article]({entry.link})"
                 youtube_url = get_youtube_video(entry)
                 youtube = f"[Video]({youtube_url})" if youtube_url else ""
-                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, "", "")
+                challenge_url = get_challenge(entry.title)
+                challenge = f"[Challenge]({challenge_url})" if challenge_url else ""
+                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, challenge, "")
                 index += 1
