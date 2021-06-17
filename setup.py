@@ -15,7 +15,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         "PyYAML~=5.4.1",
-        "feedparser~=6.0.6"
+        "feedparser~=6.0.6",
+        "beautifulsoup4~=4.9.3"
     ],
     entry_points={
         "console_scripts": [
