@@ -14,7 +14,8 @@ setuptools.setup(
     url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
     packages=setuptools.find_packages(),
     install_requires=[
-        "PyYAML~=5.4.1"
+        "PyYAML~=5.4.1",
+        "feedparser~=6.0.6"
     ],
     entry_points={
         "console_scripts": [
