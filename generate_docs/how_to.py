@@ -40,6 +40,7 @@ def get_slug(title: str, sep: str):
 def get_challenge(title: str):
     slug = get_slug(title, "-")
     base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/challenges/"
+    print(f"Trying {base}{slug}")
     request = requests.get(f"{base}{slug}")
     if request.status_code == 200:
         return f"{base}{slug}"
@@ -48,6 +49,7 @@ def get_challenge(title: str):
 def get_notebook(title: str):
     slug = get_slug(title, "_")
     base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/notebooks/"
+    print(f"Trying {base}{slug}.ipynb")
     request = requests.get(f"{base}{slug}.ipynb")
     if request.status_code == 200:
         return f"{base}{slug}.ipynb"

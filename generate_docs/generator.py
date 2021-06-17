@@ -65,10 +65,10 @@ def main_readmes():
 
 def main_how_to():
     how_to = HowTo()
-    how_to.page.output_page("how_to")
+    how_to.page.output_page("")
 
 
 if __name__ == '__main__':
-    #main_wiki()
-    #main_readmes()
+    main_wiki()
+    main_readmes()
     main_how_to()

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="generate_docs",
-    version="2.2.0",
+    version="2.3.0",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
     description="A docs generation package for the Sample Programs repo",
@@ -23,6 +23,7 @@ setuptools.setup(
         "console_scripts": [
             'wikig = generate_docs.generator:main_wiki',
             'wikir = generate_docs.generator:main_readmes',
+            'wikih = generate_docs.generator:main_how_to'
         ],
     },
     classifiers=(
