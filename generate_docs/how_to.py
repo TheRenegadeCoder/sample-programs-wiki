@@ -84,7 +84,16 @@ class HowTo:
         self.page.add_section_break()
 
         # Article List
-        self.page.add_table_header("Index", "Title", "Publish Date", "Article", "Video", "Challenge", "Notebook")
+        self.page.add_table_header(
+            "Index", 
+            "Title", 
+            "Publish Date", 
+            "Article", 
+            "Video", 
+            "Challenge", 
+            "Notebook",
+            "Testing"
+        )
         self.build_table()
 
     def build_table(self):
@@ -98,5 +107,16 @@ class HowTo:
                 challenge = f"[Challenge]({challenge_url})" if challenge_url else ""
                 notebook_url = get_notebook(entry.title)
                 notebook = f"[Notebook]({notebook_url})" if notebook_url else ""
-                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, challenge, notebook)
+                test_url = get_test(entry.title)
+                test = f"[Test]({test_url})" if test_url else ""
+                self.page.add_table_row(
+                    str(index), 
+                    entry.title, 
+                    entry.published, 
+                    article, 
+                    youtube, 
+                    challenge, 
+                    notebook,
+                    test
+                )
                 index += 1
