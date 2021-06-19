@@ -39,7 +39,7 @@ def get_slug(title: str, sep: str):
 
 def get_challenge(title: str):
     slug = get_slug(title, "-")
-    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/challenges/"
+    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/main/challenges/"
     print(f"Trying {base}{slug}")
     request = requests.get(f"{base}{slug}")
     if request.status_code == 200:
@@ -48,11 +48,20 @@ def get_challenge(title: str):
 
 def get_notebook(title: str):
     slug = get_slug(title, "_")
-    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/master/notebooks/"
+    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/main/notebooks/"
     print(f"Trying {base}{slug}.ipynb")
     request = requests.get(f"{base}{slug}.ipynb")
     if request.status_code == 200:
         return f"{base}{slug}.ipynb"
+
+
+def get_test(title: str):
+    slug = get_slug(title, "_")
+    base = "https://github.com/TheRenegadeCoder/how-to-python-code/tree/main/testing/"
+    print(f"Trying {base}{slug}.py")
+    request = requests.get(f"{base}{slug}.py")
+    if request.status_code == 200:
+        return f"{base}{slug}.py"
 
 
 class HowTo:
@@ -75,7 +84,16 @@ class HowTo:
         self.page.add_section_break()
 
         # Article List
-        self.page.add_table_header("Index", "Title", "Publish Date", "Article", "Video", "Challenge", "Notebook")
+        self.page.add_table_header(
+            "Index", 
+            "Title", 
+            "Publish Date", 
+            "Article", 
+            "Video", 
+            "Challenge", 
+            "Notebook",
+            "Testing"
+        )
         self.build_table()
 
     def build_table(self):
@@ -89,5 +107,16 @@ class HowTo:
                 challenge = f"[Challenge]({challenge_url})" if challenge_url else ""
                 notebook_url = get_notebook(entry.title)
                 notebook = f"[Notebook]({notebook_url})" if notebook_url else ""
-                self.page.add_table_row(str(index), entry.title, entry.published, article, youtube, challenge, notebook)
+                test_url = get_test(entry.title)
+                test = f"[Test]({test_url})" if test_url else ""
+                self.page.add_table_row(
+                    str(index), 
+                    entry.title, 
+                    entry.published, 
+                    article, 
+                    youtube, 
+                    challenge, 
+                    notebook,
+                    test
+                )
                 index += 1
