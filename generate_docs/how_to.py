@@ -80,6 +80,8 @@ class HowTo:
         # Introduction
         self.page.add_header("How to Python - Source Code")
         self.page.add_paragraph(get_intro_text())
+
+        # Table
         headers = [
             "Index",
             "Title",
