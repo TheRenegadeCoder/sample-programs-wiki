@@ -2,8 +2,7 @@ from typing import Optional
 from bs4 import BeautifulSoup
 import requests
 import feedparser
-
-from generate_docs.markdown import MarkdownPage
+from snake.md import Document
 
 
 def get_intro_text():
@@ -66,7 +65,7 @@ def get_test(title: str):
 
 class HowTo:
     def __init__(self):
-        self.page: Optional[MarkdownPage] = None
+        self.page: Optional[Document] = None
         self.feed: Optional[list] = None
         self._load_data()
         self._build_readme()
@@ -75,13 +74,11 @@ class HowTo:
         self.feed = get_series_posts()
 
     def _build_readme(self):
-        self.page = MarkdownPage("README")
+        self.page = Document("README")
 
         # Introduction
-        self.page.add_content("# How to Python - Source Code")
-        self.page.add_section_break()
-        self.page.add_content(get_intro_text())
-        self.page.add_section_break()
+        self.page.add_header("How to Python - Source Code")
+        self.page.add_paragraph(get_intro_text())
 
         # Article List
         self.page.add_table_header(
