@@ -1,8 +1,9 @@
 from typing import Optional
-from bs4 import BeautifulSoup
-import requests
+
 import feedparser
-from snake.md import Document
+import requests
+from bs4 import BeautifulSoup
+from snake.md import Document, Table, InlineText
 
 
 def get_intro_text():
@@ -79,41 +80,45 @@ class HowTo:
         # Introduction
         self.page.add_header("How to Python - Source Code")
         self.page.add_paragraph(get_intro_text())
-
-        # Article List
-        self.page.add_table_header(
-            "Index", 
-            "Title", 
-            "Publish Date", 
-            "Article", 
-            "Video", 
-            "Challenge", 
+        headers = [
+            "Index",
+            "Title",
+            "Publish Date",
+            "Article",
+            "Video",
+            "Challenge",
             "Notebook",
             "Testing"
+        ]
+        table = Table(
+            [InlineText(header) for header in headers],
+            self.build_table()
         )
-        self.build_table()
+        self.page.add_element(table)
 
-    def build_table(self):
+    def build_table(self) -> list[list[InlineText]]:
         index = 1
+        body = []
         for entry in self.feed:
             if "Code Snippets" not in entry.title:
-                article = f"[Article]({entry.link})"
+                article = InlineText("Article", url=entry.link)
                 youtube_url = get_youtube_video(entry)
-                youtube = f"[Video]({youtube_url})" if youtube_url else ""
+                youtube = InlineText("Video", url=youtube_url) if youtube_url else InlineText("")
                 challenge_url = get_challenge(entry.title)
-                challenge = f"[Challenge]({challenge_url})" if challenge_url else ""
+                challenge = InlineText("Challenge", url=challenge_url) if challenge_url else InlineText("")
                 notebook_url = get_notebook(entry.title)
-                notebook = f"[Notebook]({notebook_url})" if notebook_url else ""
+                notebook = InlineText("Notebook", url=notebook_url) if notebook_url else ""
                 test_url = get_test(entry.title)
-                test = f"[Test]({test_url})" if test_url else ""
-                self.page.add_table_row(
-                    str(index), 
-                    entry.title, 
-                    entry.published, 
-                    article, 
-                    youtube, 
-                    challenge, 
+                test = InlineText("Test", url=test_url) if test_url else ""
+                body.append([
+                    InlineText(str(index)),
+                    InlineText(entry.title),
+                    InlineText(entry.published),
+                    article,
+                    youtube,
+                    challenge,
                     notebook,
                     test
-                )
+                ])
                 index += 1
+        return body
