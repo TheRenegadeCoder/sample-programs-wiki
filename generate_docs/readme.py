@@ -1,23 +1,27 @@
-from generate_docs.markdown import MarkdownPage, build_doc_link, verify_link, build_req_link
 from generate_docs.repo import Repo, LanguageCollection
+from snake.md import Document, Paragraph, InlineText
 
 
-def _get_intro_text(language: LanguageCollection) -> str:
-    introduction = f"Welcome to Sample Programs in {language.get_readable_name()}!"
-    docs = f"""To find documentation related to the {language.get_readable_name()} 
-code in this repo, look [here]({language.sample_program_url})."""
+def _get_intro_text(language: LanguageCollection) -> Paragraph:
+    text = [
+        InlineText(f"Welcome to Sample Programs in {language.get_readable_name()}!"),
+        InlineText(f"To find documentation related to the {language.get_readable_name()} code in this repo, look"),
+        InlineText("here", url=language.sample_program_url)
+    ]
     if not verify_link(language.sample_program_url):
-        return introduction
+        return Paragraph(text[:1])
     else:
-        return " ".join([introduction, docs])
+        return Paragraph(text)
 
 
 def _get_sample_programs_text() -> str:
-    return """Below, you'll find a list of code snippets in this collection.
-Code snippets preceded by :warning: link to a GitHub 
-issue query featuring a possible article request issue. If an article request issue 
-doesn't exist, we encourage you to create one. Meanwhile, code snippets preceded 
-by :white_check_mark: link to an existing article which provides further documentation."""
+    return """
+    Below, you'll find a list of code snippets in this collection.
+    Code snippets preceded by :warning: link to a GitHub 
+    issue query featuring a possible article request issue. If an article request issue 
+    doesn't exist, we encourage you to create one. Meanwhile, code snippets preceded 
+    by :white_check_mark: link to an existing article which provides further documentation.
+    """
 
 
 def _generate_program_list(language: LanguageCollection) -> list:
@@ -82,7 +86,7 @@ class ReadMeCatalog:
         :param repo: a repository instance
         """
         self.repo: Repo = repo
-        self.pages: dict[str, MarkdownPage] = dict()
+        self.pages: dict[str, Document] = dict()
         self._build_readmes()
 
     def _build_readme(self, language: LanguageCollection) -> None:
@@ -91,21 +95,16 @@ class ReadMeCatalog:
         :param language: a programming language collection (e.g., Python)
         :return: None
         """
-        page = MarkdownPage("README")
+        page = Document("README")
 
         # Introduction
-        page.add_content(f"# Sample Programs in {language.get_readable_name()}")
-        page.add_section_break()
-        page.add_content(_get_intro_text(language))
-        page.add_section_break()
+        page.add_header(f"Sample Programs in {language.get_readable_name()}")
+        page.add_element(_get_intro_text(language))
 
         # Sample Programs List
-        page.add_content("## Sample Programs List")
-        page.add_section_break()
-        page.add_content(_get_sample_programs_text())
-        page.add_section_break()
+        page.add_header("Sample Programs List", level=2)
+        page.add_paragraph(_get_sample_programs_text())
         page.add_content(*_generate_program_list(language))
-        page.add_section_break()
 
         # Testing
         page.add_content("## Testing")
