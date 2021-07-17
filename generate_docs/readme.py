@@ -6,9 +6,9 @@ def _get_intro_text(language: LanguageCollection) -> Paragraph:
     text = [
         InlineText(f"Welcome to Sample Programs in {language.get_readable_name()}!"),
         InlineText(f"To find documentation related to the {language.get_readable_name()} code in this repo, look"),
-        InlineText("here", url=language.sample_program_url)
+        InlineText("here.", url=language.sample_program_url)
     ]
-    if not verify_link(language.sample_program_url):
+    if not text[-1].verify_url():
         return Paragraph(text[:1])
     else:
         return Paragraph(text)
@@ -69,10 +69,15 @@ See the [Glotter project](https://github.com/auroq/glotter) for more information
 """
 
 
-def _generate_credit():
-    return """---
-This page was generated automatically by the Sample Programs Docs Generator. 
-Find out how to support this project [here](https://github.com/TheRenegadeCoder/sample-programs-docs-generator)."""
+def _generate_credit() -> Paragraph:
+    p = Paragraph(
+        """
+        This page was generated automatically by the Sample Programs Docs Generator. 
+        Find out how to support this project on Github.
+        """
+    )
+    p.insert_link("this project", "https://github.com/TheRenegadeCoder/sample-programs-docs-generator")
+    return p
 
 
 class ReadMeCatalog:
@@ -109,7 +114,8 @@ class ReadMeCatalog:
         # Testing
         page.add_content("## Testing")
         page.add_content(_generate_testing_section(language))
-        page.add_content(_generate_credit())
+        page.add_horizontal_rule()
+        page.add_element(_generate_credit())
 
         self.pages[language.name] = page
 
