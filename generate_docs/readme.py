@@ -44,36 +44,6 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     return MDList(list_items)
 
 
-def _generate_testing_section(language: LanguageCollection):
-    test_data = language.get_test_data()
-    if not test_data:
-        return """This language currently does not feature testing. If you'd like to help in the efforts to test all
-of the code in this repo, consider creating a testinfo.yml file with the following information:
-        
-```yml
-folder:
-  extension: 
-  naming:
-
-container:
-  image: 
-  tag: 
-  cmd:
-```
-
-See the [Glotter project](https://github.com/auroq/glotter) for more information on how to create a testinfo file. 
-"""
-    else:
-        return f"""The following list shares details about what we're using to test all Sample Programs in 
-{language.get_readable_name()}.
-        
-- Docker Image: {test_data["container"]["image"]}
-- Docker Tag: {test_data["container"]["tag"]}
-
-See the [Glotter project](https://github.com/auroq/glotter) for more information on how we handle testing. 
-"""
-
-
 def _generate_credit() -> Paragraph:
     p = Paragraph(
         """
@@ -114,11 +84,32 @@ class ReadMeCatalog:
         # Sample Programs List
         page.add_header("Sample Programs List", level=2)
         page.add_paragraph(_get_sample_programs_text())
-        page.add_content(*_generate_program_list(language))
+        page.add_element(_generate_program_list(language))
 
         # Testing
-        page.add_content("## Testing")
-        page.add_content(_generate_testing_section(language))
+        page.add_header("Testing", level=2)
+        test_data = language.get_test_data()
+        if not test_data:
+            page.add_paragraph(
+                """
+                This language currently does not feature testing. If you'd like to help in the efforts to test all of 
+                the code in this repo, consider creating a testinfo.yml file with the following information:
+                """
+            )
+            page.add_code("folder:\n\textension:\n\tnaming:\n\ncontainer:\n\timage:\n\ttag:\n\tcmd:", lang="yml")
+        else:
+            page.add_paragraph(
+                f"""
+                The following list shares details about what we're using to test all Sample Programs in 
+                {language.get_readable_name()}.
+                """
+            )
+            page.add_unordered_list([
+                f"Docker Image: {test_data['container']['image']}",
+                f"Docker Tag: {test_data['container']['tag']}"
+            ])
+        glotter = page.add_paragraph("See the Glotter project for more information on how to create a testinfo file.")
+        glotter.insert_link("Glotter project", "https://github.com/auroq/glotter")
         page.add_horizontal_rule()
         page.add_element(_generate_credit())
 
