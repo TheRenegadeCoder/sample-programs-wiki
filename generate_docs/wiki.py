@@ -1,6 +1,7 @@
 import os
 
-from generate_docs.markdown import MarkdownPage, create_md_link, build_language_link
+from snake.md import Document
+
 from generate_docs.repo import Repo, LanguageCollection
 
 
@@ -18,7 +19,7 @@ class Wiki:
         self.wiki_url_base: str = "/TheRenegadeCoder/sample-programs/wiki/"
         self.repo_url_base: str = "/TheRenegadeCoder/sample-programs/tree/main/archive/"
         self.issue_url_base: str = "/TheRenegadeCoder/sample-programs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+"
-        self.pages: list[MarkdownPage] = list()
+        self.pages: list[Document] = list()
         self._build_alphabet_catalog()
         self._build_alphabet_pages()
 
@@ -73,7 +74,7 @@ class Wiki:
         :param letter: the starting letter of a set of programming languages (e.g., "p" for [pascal, perl, python])
         :return:
         """
-        page = MarkdownPage(letter.capitalize())
+        page = Document(letter.capitalize())
         introduction = """The following table contains all the existing languages
                     in the repository that start with the letter %s:""" % letter.capitalize()
         page.add_content(introduction)
@@ -116,7 +117,7 @@ class Wiki:
         Builds a wiki alphabet catalog from the repo.
         :return: None
         """
-        page = MarkdownPage("Alphabetical Language Catalog")
+        page = Document("Alphabetical Language Catalog")
         alphabetical_list = self.repo.get_sorted_language_letters()
         page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
         for letter in alphabetical_list:
