@@ -1,5 +1,5 @@
 from generate_docs.repo import Repo, LanguageCollection
-from snake.md import Document, Paragraph, InlineText
+from snake.md import Document, Paragraph, InlineText, MDList
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
@@ -24,7 +24,7 @@ def _get_sample_programs_text() -> str:
     """
 
 
-def _generate_program_list(language: LanguageCollection) -> list:
+def _generate_program_list(language: LanguageCollection) -> MDList:
     """
     A helper function which generates a list of programs for the README.
     :param language: a language collection
@@ -33,10 +33,15 @@ def _generate_program_list(language: LanguageCollection) -> list:
     list_items = list()
     for program in language.sample_programs:
         readable_name = program.normalized_name.replace("-", " ").title()
-        doc_link = build_doc_link(program, f"{readable_name} in {language.get_readable_name()}")
-        req_link = build_req_link(program)
-        list_items.append(f"- {doc_link} [{req_link}]")
-    return list_items
+        program_line = f"- :white_check_mark: {readable_name} in {language.get_readable_name()} [Requirements]"
+        doc_link = InlineText(program_line, url=program.sample_program_doc_url)
+        if not doc_link.verify_url():
+            program_line = program_line.replace(":white_check_mark:", ":warning:")
+            doc_link = InlineText(program_line, url=program.sample_program_issue_url)
+        list_item = Paragraph([doc_link])
+        list_item.insert_link("Requirements", program.sample_program_req_url)
+        list_items.append(list_item)
+    return MDList(list_items)
 
 
 def _generate_testing_section(language: LanguageCollection):
