@@ -31,7 +31,7 @@ class Wiki:
         :param page_name: the name of the page to link
         :return: a markdown link to a wiki page
         """
-        return str(InlineText(text, url=f"{self.wiki_url_base}{page_name}))
+        return str(InlineText(text, url=f"{self.wiki_url_base}{page_name}"))
 
     def _build_repo_link(self, text: str, letter: str, language: str) -> str:
         """
@@ -68,6 +68,19 @@ class Wiki:
             file_path_link = ""
         return file_path_link
 
+    @staticmethod
+    def _build_language_link(language: LanguageCollection) -> str:
+        """
+        A handy abstraction for the create_md_link() method which creates a link to a sample programs language page.
+        (e.g., https://sample-programs.therenegadecoder.com/languages/c/)
+        :param language: the language to link
+        :return: a markdown link to the language page if it exists; an empty string otherwise
+        """
+        lang = InlineText("Here", language.sample_program_url)
+        if not lang.verify_url():
+            lang = InlineText("")
+        return str(lang)
+
     def _build_alphabet_page(self, letter: str):
         """
         A helper method which generates a single wiki alphabet page given a letter.
@@ -88,7 +101,7 @@ class Wiki:
         for language in languages_by_letter:
             total_snippets += language.total_snippets
             language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
-            tag_link = build_language_link(language)
+            tag_link = self._build_language_link(language)
             issues_link = self._build_issue_link(language.name)
             tests_link = self._build_test_link(language, letter)
             body.append([language_link, tag_link, issues_link, tests_link, str(language.total_snippets)])
@@ -112,7 +125,7 @@ class Wiki:
             next_text = f"Next ({next_letter})"
             previous_link = self._build_wiki_link(previous_text, previous_letter)
             next_link = self._build_wiki_link(next_text, next_letter)
-            page.add_table_header(previous_link, next_link)
+            page.add_paragraph(" ".join([previous_link, "|", next_link]))
             self.pages.append(page)
 
     def _build_alphabet_catalog(self) -> None:
