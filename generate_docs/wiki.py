@@ -1,6 +1,6 @@
 import os
 
-from snake.md import Document
+from snake.md import Document, InlineText
 
 from generate_docs.repo import Repo, LanguageCollection
 
@@ -31,7 +31,7 @@ class Wiki:
         :param page_name: the name of the page to link
         :return: a markdown link to a wiki page
         """
-        return create_md_link(text, self.wiki_url_base + page_name)
+        return str(InlineText(text, url=f"{self.wiki_url_base}{page_name}))
 
     def _build_repo_link(self, text: str, letter: str, language: str) -> str:
         """
@@ -42,7 +42,7 @@ class Wiki:
         :param language: the language to link
         :return: a markdown link to a sample programs language page
         """
-        return create_md_link(text, self.repo_url_base + letter + "/" + language)
+        return str(InlineText(text, url=f"{self.repo_url_base}{letter}/{language}"))
 
     def _build_issue_link(self, language: str) -> str:
         """
@@ -51,7 +51,7 @@ class Wiki:
         :return: a markdown link to a GitHub query for issues matching this language
         """
         lang_query = language.replace("-", "+")
-        return create_md_link("Here", self.issue_url_base + lang_query)
+        return str(InlineText("Here", f"{self.issue_url_base}{lang_query}"))
 
     def _build_test_link(self, language: LanguageCollection, letter: str) -> str:
         """
@@ -63,7 +63,7 @@ class Wiki:
         test_file_path = language.test_file_path
         if test_file_path:
             file_path = self.repo_url_base + letter + "/" + language.name + "/" + os.path.basename(test_file_path)
-            file_path_link = create_md_link("Here", file_path)
+            file_path_link = str(InlineText("Here", url=file_path))
         else:
             file_path_link = ""
         return file_path_link
@@ -108,8 +108,8 @@ class Wiki:
             next_index = (index + 1) % len(alphabetical_list)
             previous_letter = alphabetical_list[previous_index].capitalize()
             next_letter = alphabetical_list[next_index].capitalize()
-            previous_text = "Previous (%s)" % previous_letter
-            next_text = "Next (%s)" % next_letter
+            previous_text = f"Previous ({previous_letter})"
+            next_text = f"Next ({next_letter})"
             previous_link = self._build_wiki_link(previous_text, previous_letter)
             next_link = self._build_wiki_link(next_text, next_letter)
             page.add_table_header(previous_link, next_link)
