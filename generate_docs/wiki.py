@@ -75,11 +75,14 @@ class Wiki:
         :return:
         """
         page = Document(letter.capitalize())
-        introduction = """The following table contains all the existing languages
-                    in the repository that start with the letter %s:""" % letter.capitalize()
-        page.add_content(introduction)
-        page.add_section_break()
-        page.add_table_header("Language", "Article(s)", "Issue(s)", "Test(s)", "# of Snippets")
+        page.add_paragraph(
+            f"""
+            The following table contains all the existing languages in the repository that start with the letter 
+            {letter.capitalize()}:
+            """
+        )
+        header = ["Language", "Article(s)", "Issue(s)", "Test(s)", "# of Snippets"]
+        body = []
         languages_by_letter = self.repo.get_languages_by_letter(letter)
         total_snippets = 0
         for language in languages_by_letter:
@@ -88,9 +91,9 @@ class Wiki:
             tag_link = build_language_link(language)
             issues_link = self._build_issue_link(language.name)
             tests_link = self._build_test_link(language, letter)
-            page.add_table_row(language_link, tag_link, issues_link, tests_link, str(language.total_snippets))
-        page.add_table_row("**Totals**", "", "", "", str(total_snippets))
-        page.add_section_break()
+            body.append([language_link, tag_link, issues_link, tests_link, str(language.total_snippets)])
+        body.append(["**Totals**", "", "", "", str(total_snippets)])
+        page.add_table(header, body)
         return page
 
     def _build_alphabet_pages(self) -> None:
@@ -119,18 +122,20 @@ class Wiki:
         """
         page = Document("Alphabetical Language Catalog")
         alphabetical_list = self.repo.get_sorted_language_letters()
-        page.add_table_header("Collection", "# of Languages", "# of Snippets", "# of Tests")
+        header = ["Collection", "# of Languages", "# of Snippets", "# of Tests"]
+        body = []
         for letter in alphabetical_list:
             letter_link = self._build_wiki_link(letter.capitalize(), letter.capitalize())
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
             num_of_tests = sum([1 if language.test_file_path else 0 for language in languages_by_letter])
-            page.add_table_row(letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests))
-        page.add_table_row(
+            body.append([letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests)])
+        body.append([
             "**Totals**",
             str(len(self.repo.languages)),
             str(self.repo.total_snippets),
             str(self.repo.total_tests)
-        )
+        ])
+        page.add_table(header, body)
         self.pages.append(page)
