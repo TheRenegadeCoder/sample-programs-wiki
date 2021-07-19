@@ -125,7 +125,7 @@ class Wiki:
             next_text = f"Next ({next_letter})"
             previous_link = self._build_wiki_link(previous_text, previous_letter)
             next_link = self._build_wiki_link(next_text, next_letter)
-            page.add_paragraph(" ".join([previous_link, "|", next_link]))
+            page.add_paragraph(" ".join(["<", previous_link, "|", next_link, ">"]))
             self.pages.append(page)
 
     def _build_alphabet_catalog(self) -> None:
