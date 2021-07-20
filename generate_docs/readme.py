@@ -42,7 +42,7 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
         else:
             program_line.add(":white_check_mark: ")
         program_line.add(program_link)
-        program_line.add("[Requirements]")
+        program_line.add(" [Requirements]")
         program_line.insert_link("Requirements", program.sample_program_req_url)
         list_items.append(program_line)
     return MDList(list_items)
