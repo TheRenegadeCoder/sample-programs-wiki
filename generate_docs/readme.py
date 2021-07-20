@@ -4,8 +4,8 @@ from snake.md import Document, Paragraph, InlineText, MDList
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
     text = [
-        f"Welcome to Sample Programs in {language.get_readable_name()}!",
-        f"To find documentation related to the {language.get_readable_name()} code in this repo, look",
+        f"Welcome to Sample Programs in {language.get_readable_name()}! ",
+        f"To find documentation related to the {language.get_readable_name()} code in this repo, look ",
         InlineText("here.", url=language.sample_program_url)
     ]
     if not text[-1].verify_url():
@@ -32,20 +32,19 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     """
     list_items = list()
     for program in language.sample_programs:
-        list_item = Paragraph([])
+        program_line = Paragraph([])
         readable_name = program.normalized_name.replace("-", " ").title()
         program_name = f"{readable_name} in {language.get_readable_name()}"
         program_link = InlineText(program_name, url=program.sample_program_doc_url)
         if not program_link.verify_url():
-            list_item.add(":warning: ")
+            program_line.add(":warning: ")
             program_link = InlineText(program_name, url=program.sample_program_issue_url)
         else:
-            list_item.add(":white_check_mark: ")
-        list_item.add(program_link)
-        list_item.add("|")
-        list_item.add("Requirements")
-        list_item.insert_link("Requirements", program.sample_program_req_url)
-        list_items.append(list_item)
+            program_line.add(":white_check_mark: ")
+        program_line.add(program_link)
+        program_line.add("[Requirements]")
+        program_line.insert_link("Requirements", program.sample_program_req_url)
+        list_items.append(program_line)
     return MDList(list_items)
 
 
