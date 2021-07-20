@@ -4,8 +4,8 @@ from snake.md import Document, Paragraph, InlineText, MDList
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
     text = [
-        InlineText(f"Welcome to Sample Programs in {language.get_readable_name()}!"),
-        InlineText(f"To find documentation related to the {language.get_readable_name()} code in this repo, look"),
+        f"Welcome to Sample Programs in {language.get_readable_name()}!",
+        f"To find documentation related to the {language.get_readable_name()} code in this repo, look",
         InlineText("here.", url=language.sample_program_url)
     ]
     if not text[-1].verify_url():
@@ -37,25 +37,25 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
         program_name = f"{readable_name} in {language.get_readable_name()}"
         program_link = InlineText(program_name, url=program.sample_program_doc_url)
         if not program_link.verify_url():
-            list_item.add(InlineText(":warning:"))
+            list_item.add(":warning: ")
             program_link = InlineText(program_name, url=program.sample_program_issue_url)
         else:
-            list_item.add(InlineText(":white_check_mark:"))
+            list_item.add(":white_check_mark: ")
         list_item.add(program_link)
-        list_item.add(InlineText("|"))
-        list_item.add(InlineText("Requirements"))
+        list_item.add("|")
+        list_item.add("Requirements")
         list_item.insert_link("Requirements", program.sample_program_req_url)
         list_items.append(list_item)
     return MDList(list_items)
 
 
 def _generate_credit() -> Paragraph:
-    p = Paragraph([InlineText(
+    p = Paragraph([
         """
         This page was generated automatically by the Sample Programs Docs Generator. 
         Find out how to support this project on Github.
         """
-    )])
+    ])
     p.insert_link("this project", "https://github.com/TheRenegadeCoder/sample-programs-docs-generator")
     return p
 
@@ -101,7 +101,7 @@ class ReadMeCatalog:
                 the code in this repo, consider creating a testinfo.yml file with the following information:
                 """
             )
-            page.add_code("folder:\n\textension:\n\tnaming:\n\ncontainer:\n\timage:\n\ttag:\n\tcmd:", lang="yml")
+            page.add_code("folder:\n  extension:\n  naming:\n\ncontainer:\n  image:\n  tag:\n  cmd:", lang="yml")
         else:
             page.add_paragraph(
                 f"""
