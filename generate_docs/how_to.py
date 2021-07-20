@@ -25,12 +25,19 @@ def get_series_posts():
     return feed
 
 
-def get_youtube_video(entry):
+def get_youtube_video(entry) -> InlineText:
+    """
+    Generates an InlineText item corresponding to the YouTube
+    video link if it exists. Otherwise, it returns an empty
+    InlineText element.
+    """
     content = entry.content[0].value
     soup = BeautifulSoup(content, "html.parser")
     target = soup.find("h2", text="Video Summary")
     if target:
-        return target.find_next_sibling().find_all("a")[-1]["href"]
+        url = target.find_next_sibling().find_all("a")[-1]["href"]
+        return InlineText("Video", url=url)
+    return InlineText("")
 
 
 def get_slug(title: str, sep: str):
@@ -104,8 +111,7 @@ class HowTo:
         for entry in self.feed:
             if "Code Snippets" not in entry.title:
                 article = InlineText("Article", url=entry.link)
-                youtube_url = get_youtube_video(entry)
-                youtube = InlineText("Video", url=youtube_url) if youtube_url else InlineText("")
+                youtube = get_youtube_video(entry)
                 challenge_url = get_challenge(entry.title)
                 challenge = InlineText("Challenge", url=challenge_url) if challenge_url else InlineText("")
                 notebook_url = get_notebook(entry.title)
