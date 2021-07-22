@@ -1,6 +1,6 @@
 import os
 
-from snakemd import Document, InlineText
+from snakemd import Document, InlineText, Paragraph
 
 from generate_docs.repo import Repo, LanguageCollection
 
@@ -22,16 +22,6 @@ class Wiki:
         self.pages: list[Document] = list()
         self._build_alphabet_catalog()
         self._build_alphabet_pages()
-
-    def _build_wiki_link(self, text: str, page_name: str) -> str:
-        """
-        A helper method which creates a link to a wiki page.
-        (e.g., https://github.com/TheRenegadeCoder/sample-programs/wiki/S)
-        :param text: the text to display for the link
-        :param page_name: the name of the page to link
-        :return: a markdown link to a wiki page
-        """
-        return str(InlineText(text, url=f"{self.wiki_url_base}{page_name}"))
 
     def _build_repo_link(self, text: str, letter: str, language: str) -> str:
         """
@@ -123,9 +113,9 @@ class Wiki:
             next_letter = alphabetical_list[next_index].capitalize()
             previous_text = f"Previous ({previous_letter})"
             next_text = f"Next ({next_letter})"
-            previous_link = self._build_wiki_link(previous_text, previous_letter)
-            next_link = self._build_wiki_link(next_text, next_letter)
-            page.add_paragraph(" ".join(["<", previous_link, "|", next_link, ">"]))
+            previous_link = InlineText(previous_text, url=f"{self.wiki_url_base}{previous_letter}")
+            next_link = InlineText(next_text, url=f"{self.wiki_url_base}{next_letter}")
+            page.add_element(Paragraph(["< ", previous_link, " | ", next_link, " >"]))
             self.pages.append(page)
 
     def _build_alphabet_catalog(self) -> None:
@@ -138,7 +128,7 @@ class Wiki:
         header = ["Collection", "# of Languages", "# of Snippets", "# of Tests"]
         body = []
         for letter in alphabetical_list:
-            letter_link = self._build_wiki_link(letter.capitalize(), letter.capitalize())
+            letter_link = str(InlineText(letter.capitalize(), url=f"{self.wiki_url_base}{letter.capitalize()}"))
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
