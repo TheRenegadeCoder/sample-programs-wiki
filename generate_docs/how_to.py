@@ -3,7 +3,7 @@ from typing import Optional
 import feedparser
 import requests
 from bs4 import BeautifulSoup
-from snake.md import Document, Table, InlineText
+from snakemd import Document, Table, InlineText
 
 
 def get_intro_text():

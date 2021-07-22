@@ -1,5 +1,5 @@
 from generate_docs.repo import Repo, LanguageCollection
-from snake.md import Document, Paragraph, InlineText, MDList
+from snakemd import Document, Paragraph, InlineText, MDList
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:

@@ -1,6 +1,6 @@
 import os
 
-from snake.md import Document, InlineText
+from snakemd import Document, InlineText
 
 from generate_docs.repo import Repo, LanguageCollection
 
