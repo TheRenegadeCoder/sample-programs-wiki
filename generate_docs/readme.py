@@ -1,17 +1,14 @@
 from generate_docs.repo import Repo, LanguageCollection
-from snake.md import Document, Paragraph, InlineText, MDList
+from snakemd import Document, Paragraph, InlineText, MDList
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
-    text = [
-        InlineText(f"Welcome to Sample Programs in {language.get_readable_name()}!"),
-        InlineText(f"To find documentation related to the {language.get_readable_name()} code in this repo, look"),
-        InlineText("here.", url=language.sample_program_url)
-    ]
-    if not text[-1].verify_url():
-        return Paragraph(text[:1])
-    else:
-        return Paragraph(text)
+    paragraph = Paragraph([f"Welcome to Sample Programs in {language.get_readable_name()}! "])
+    text = InlineText("here.", url=language.sample_program_url)
+    if text.verify_url():
+        paragraph.add(f"To find documentation related to the {language.get_readable_name()} code in this repo, look ")
+        paragraph.add(text)
+    return paragraph
 
 
 def _get_sample_programs_text() -> str:
@@ -32,30 +29,25 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     """
     list_items = list()
     for program in language.sample_programs:
-        list_item = Paragraph([])
         readable_name = program.normalized_name.replace("-", " ").title()
         program_name = f"{readable_name} in {language.get_readable_name()}"
-        program_link = InlineText(program_name, url=program.sample_program_doc_url)
-        if not program_link.verify_url():
-            list_item.add(InlineText(":warning:"))
-            program_link = InlineText(program_name, url=program.sample_program_issue_url)
-        else:
-            list_item.add(InlineText(":white_check_mark:"))
-        list_item.add(program_link)
-        list_item.add(InlineText("|"))
-        list_item.add(InlineText("Requirements"))
-        list_item.insert_link("Requirements", program.sample_program_req_url)
-        list_items.append(list_item)
+        program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
+            .insert_link(f"{readable_name} in {language.get_readable_name()}", program.sample_program_doc_url) \
+            .insert_link("Requirements", program.sample_program_req_url)
+        if program_line.verify_urls()[program.sample_program_doc_url]:
+            program_line.replace(":white_check_mark:", ":warning:")
+            program_line.insert_link(program_name, program.sample_program_issue_url)
+        list_items.append(program_line)
     return MDList(list_items)
 
 
 def _generate_credit() -> Paragraph:
-    p = Paragraph([InlineText(
+    p = Paragraph([
         """
         This page was generated automatically by the Sample Programs Docs Generator. 
         Find out how to support this project on Github.
         """
-    )])
+    ])
     p.insert_link("this project", "https://github.com/TheRenegadeCoder/sample-programs-docs-generator")
     return p
 
@@ -101,7 +93,7 @@ class ReadMeCatalog:
                 the code in this repo, consider creating a testinfo.yml file with the following information:
                 """
             )
-            page.add_code("folder:\n\textension:\n\tnaming:\n\ncontainer:\n\timage:\n\ttag:\n\tcmd:", lang="yml")
+            page.add_code("folder:\n  extension:\n  naming:\n\ncontainer:\n  image:\n  tag:\n  cmd:", lang="yml")
         else:
             page.add_paragraph(
                 f"""

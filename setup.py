@@ -18,7 +18,7 @@ setuptools.setup(
         "feedparser~=6.0.6",
         "beautifulsoup4~=4.9.3",
         "requests~=2.25.1",
-        "SnakeMD~=0.3.0"
+        "SnakeMD~=0.6.0"
     ],
     entry_points={
         "console_scripts": [
