@@ -32,11 +32,11 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
         readable_name = program.normalized_name.replace("-", " ").title()
         program_name = f"{readable_name} in {language.get_readable_name()}"
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
-            .insert_link(f"{readable_name} in {language.get_readable_name()}", program.sample_program_doc_url) \
+            .insert_link(program_name, program.sample_program_doc_url) \
             .insert_link("Requirements", program.sample_program_req_url)
         if not program_line.verify_urls()[program.sample_program_doc_url]:
-            program_line.replace(":white_check_mark:", ":warning:")
-            program_line.replace_link(program_name, program.sample_program_issue_url)
+            program_line.replace(":white_check_mark:", ":warning:") \
+                .replace_link(program.sample_program_doc_url, program.sample_program_issue_url)
         list_items.append(program_line)
     return MDList(list_items)
 
