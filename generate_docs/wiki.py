@@ -107,7 +107,7 @@ class Wiki:
     def _build_alphabet_pages(self) -> None:
         """
         Builds a set of wiki alphabet pages from the repo.
-        
+
         :return: None
         """
         alphabetical_list = self.repo.get_sorted_language_letters()
@@ -134,7 +134,7 @@ class Wiki:
         header = ["Collection", "# of Languages", "# of Snippets", "# of Tests"]
         body = []
         for letter in alphabetical_list:
-            letter_link = str(InlineText(letter.capitalize(), url=f"{self.wiki_url_base}{letter.capitalize()}"))
+            letter_link = InlineText(letter.capitalize(), url=f"{self.wiki_url_base}{letter.capitalize()}")
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
