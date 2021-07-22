@@ -3,15 +3,12 @@ from snakemd import Document, Paragraph, InlineText, MDList
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
-    text = [
-        f"Welcome to Sample Programs in {language.get_readable_name()}! ",
-        f"To find documentation related to the {language.get_readable_name()} code in this repo, look ",
-        InlineText("here.", url=language.sample_program_url)
-    ]
-    if not text[-1].verify_url():
-        return Paragraph(text[:1])
-    else:
-        return Paragraph(text)
+    paragraph = Paragraph([f"Welcome to Sample Programs in {language.get_readable_name()}! "])
+    text = InlineText("here.", url=language.sample_program_url)
+    if text.verify_url():
+        paragraph.add(f"To find documentation related to the {language.get_readable_name()} code in this repo, look ")
+        paragraph.add(text)
+    return paragraph
 
 
 def _get_sample_programs_text() -> str:
