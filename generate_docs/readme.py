@@ -34,7 +34,7 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
             .insert_link(f"{readable_name} in {language.get_readable_name()}", program.sample_program_doc_url) \
             .insert_link("Requirements", program.sample_program_req_url)
-        if program_line.verify_urls()[program.sample_program_doc_url]:
+        if not program_line.verify_urls()[program.sample_program_doc_url]:
             program_line.replace(":white_check_mark:", ":warning:")
             program_line.insert_link(program_name, program.sample_program_issue_url)
         list_items.append(program_line)
