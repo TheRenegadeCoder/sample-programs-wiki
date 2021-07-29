@@ -2,7 +2,7 @@ import sys
 from typing import Optional
 
 from generate_docs.readme import ReadMeCatalog
-from generate_docs.repo import Repo
+from subete import Repo
 from generate_docs.wiki import Wiki
 from generate_docs.how_to import HowTo
 
