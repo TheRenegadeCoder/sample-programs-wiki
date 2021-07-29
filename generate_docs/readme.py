@@ -1,4 +1,4 @@
-from generate_docs.repo import Repo, LanguageCollection
+from subete import Repo, LanguageCollection
 from snakemd import Document, Paragraph, InlineText, MDList
 
 
