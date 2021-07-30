@@ -1,7 +1,6 @@
 import os
 
 from snakemd import Document, InlineText, Paragraph, Table
-
 from subete import Repo, LanguageCollection
 
 

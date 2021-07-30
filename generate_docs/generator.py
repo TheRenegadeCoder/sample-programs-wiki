@@ -1,16 +1,18 @@
 import sys
 from typing import Optional
 
-from generate_docs.readme import ReadMeCatalog
 from subete import Repo
-from generate_docs.wiki import Wiki
+
 from generate_docs.how_to import HowTo
+from generate_docs.readme import ReadMeCatalog
+from generate_docs.wiki import Wiki
 
 
 class Generator:
     """
     The top-level class used to generate wiki and README objects.
     """
+
     def __init__(self, source_dir):
         self.source_dir = source_dir
         self.repo: Repo = Repo(self.source_dir)
