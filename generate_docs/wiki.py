@@ -1,8 +1,7 @@
 import os
 
 from snakemd import Document, InlineText, Paragraph, Table
-
-from generate_docs.repo import Repo, LanguageCollection
+from subete import Repo, LanguageCollection
 
 
 class Wiki:

@@ -1,5 +1,5 @@
-from generate_docs.repo import Repo, LanguageCollection
 from snakemd import Document, Paragraph, InlineText, MDList
+from subete import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
