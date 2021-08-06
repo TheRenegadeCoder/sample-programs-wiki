@@ -54,7 +54,7 @@ class Wiki:
         """
         test_file_path = language.test_file_path
         if test_file_path:
-            file_path = self.repo_url_base + letter + "/" + language.name + "/" + os.path.basename(test_file_path)
+            file_path = self.repo_url_base + letter + "/" + language.name() + "/" + os.path.basename(test_file_path)
             file_path_link = InlineText("Here", url=file_path)
         else:
             file_path_link = InlineText("")

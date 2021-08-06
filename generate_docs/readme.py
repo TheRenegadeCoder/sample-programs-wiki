@@ -3,10 +3,10 @@ from subete import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
-    paragraph = Paragraph([f"Welcome to Sample Programs in {language.get_readable_name()}! "])
-    text = InlineText("here.", url=language.sample_program_url)
+    paragraph = Paragraph([f"Welcome to Sample Programs in {language.name()}! "])
+    text = InlineText("here.", url=language.language_url())
     if text.verify_url():
-        paragraph.add(f"To find documentation related to the {language.get_readable_name()} code in this repo, look ")
+        paragraph.add(f"To find documentation related to the {language.name()} code in this repo, look ")
         paragraph.add(text)
     return paragraph
 
@@ -28,7 +28,7 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     :return: a list of sample programs list items
     """
     list_items = list()
-    for program in language.sample_programs:
+    for program in language.sample_programs():
         readable_name = program.normalized_name.replace("-", " ").title()
         program_name = f"{readable_name} in {language.get_readable_name()}"
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
