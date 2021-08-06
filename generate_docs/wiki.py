@@ -69,7 +69,7 @@ class Wiki:
         :param LanguageCollection language: the language to link
         :return: a markdown link to the language page if it exists; an empty string otherwise
         """
-        lang = InlineText("Here", language.sample_program_url)
+        lang = InlineText("Here", language.language_url())
         if not lang.verify_url():
             lang = InlineText("")
         return lang
@@ -93,12 +93,12 @@ class Wiki:
         languages_by_letter = self.repo.get_languages_by_letter(letter)
         total_snippets = 0
         for language in languages_by_letter:
-            total_snippets += language.total_snippets
-            language_link = self._build_repo_link(language.name.capitalize(), letter, language.name)
+            total_snippets += language.total_programs()
+            language_link = self._build_repo_link(language.name(), letter, language.name())
             tag_link = self._build_language_link(language)
-            issues_link = self._build_issue_link(language.name)
+            issues_link = self._build_issue_link(language.name())
             tests_link = self._build_test_link(language, letter)
-            body.append([language_link, tag_link, issues_link, tests_link, str(language.total_snippets)])
+            body.append([language_link, tag_link, issues_link, tests_link, str(language.total_programs())])
         body.append(["**Totals**", "", "", "", str(total_snippets)])
         page.add_element(Table(header, body))
         return page
