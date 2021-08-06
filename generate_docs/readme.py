@@ -3,10 +3,10 @@ from subete import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
-    paragraph = Paragraph([f"Welcome to Sample Programs in {language.name()}! "])
-    text = InlineText("here.", url=language.language_url())
+    paragraph = Paragraph([f"Welcome to Sample Programs in {language}! "])
+    text = InlineText("here.", url=language.lang_docs_url())
     if text.verify_url():
-        paragraph.add(f"To find documentation related to the {language.name()} code in this repo, look ")
+        paragraph.add(f"To find documentation related to the {language} code in this repo, look ")
         paragraph.add(text)
     return paragraph
 
@@ -29,13 +29,13 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     """
     list_items = list()
     for program in language.sample_programs():
-        program_name = f"{str(program)} in {language.name()}"
+        program_name = f"{str(program)} in {language}"
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
             .insert_link(program_name, program.documentation_url()) \
             .insert_link("Requirements", program.requirements_url())
         if not program_line.verify_urls()[program.documentation_url()]:
             program_line.replace(":white_check_mark:", ":warning:") \
-                .replace_link(program.documentation_url(), program.issue_query_url())
+                .replace_link(program.documentation_url(), program.article_issue_query_url())
         list_items.append(program_line)
     return MDList(list_items)
 
@@ -74,7 +74,7 @@ class ReadMeCatalog:
         page = Document("README")
 
         # Introduction
-        page.add_header(f"Sample Programs in {language.name()}")
+        page.add_header(f"Sample Programs in {language}")
         page.add_element(_get_intro_text(language))
 
         # Sample Programs List
@@ -95,10 +95,7 @@ class ReadMeCatalog:
             page.add_code("folder:\n  extension:\n  naming:\n\ncontainer:\n  image:\n  tag:\n  cmd:", lang="yml")
         else:
             page.add_paragraph(
-                f"""
-                The following list shares details about what we're using to test all Sample Programs in 
-                {language.name()}.
-                """
+                f"The following list shares details about what we're using to test all Sample Programs in {language}."
             )
             page.add_unordered_list([
                 f"Docker Image: {test_data['container']['image']}",
@@ -109,7 +106,7 @@ class ReadMeCatalog:
         page.add_horizontal_rule()
         page.add_element(_generate_credit())
 
-        self.pages[language.name()] = page
+        self.pages[str(language)] = page
 
     def _build_readmes(self) -> None:
         """

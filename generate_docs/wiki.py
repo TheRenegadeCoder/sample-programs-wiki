@@ -1,5 +1,3 @@
-import os
-
 from snakemd import Document, InlineText, Paragraph, Table
 from subete import Repo, LanguageCollection
 
@@ -44,21 +42,18 @@ class Wiki:
         lang_query = language.replace("-", "+")
         return InlineText("Here", f"{self.issue_url_base}{lang_query}")
 
-    def _build_test_link(self, language: LanguageCollection, letter: str) -> InlineText:
+    @staticmethod
+    def _build_test_link(language: LanguageCollection) -> InlineText:
         """
         A helper method which creates a link to the test file for a given language collection.
 
         :param LanguageCollection language: a language collection
-        :param str letter: the first letter of the language
         :return: a markdown link to a test file if it exists; an empty string otherwise
         """
-        test_file_path = language.test_file_path
-        if test_file_path:
-            file_path = self.repo_url_base + letter + "/" + language.name() + "/" + os.path.basename(test_file_path)
-            file_path_link = InlineText("Here", url=file_path)
-        else:
-            file_path_link = InlineText("")
-        return file_path_link
+        test = InlineText("Here", url=language.testinfo_url())
+        if not test.verify_url():
+            test = InlineText("")
+        return test
 
     @staticmethod
     def _build_language_link(language: LanguageCollection) -> InlineText:
@@ -69,7 +64,7 @@ class Wiki:
         :param LanguageCollection language: the language to link
         :return: a markdown link to the language page if it exists; an empty string otherwise
         """
-        lang = InlineText("Here", language.language_url())
+        lang = InlineText("Here", language.lang_docs_url())
         if not lang.verify_url():
             lang = InlineText("")
         return lang
@@ -94,10 +89,10 @@ class Wiki:
         total_snippets = 0
         for language in languages_by_letter:
             total_snippets += language.total_programs()
-            language_link = self._build_repo_link(language.name(), letter, language.name())
+            language_link = self._build_repo_link(str(language), letter, str(language))
             tag_link = self._build_language_link(language)
-            issues_link = self._build_issue_link(language.name())
-            tests_link = self._build_test_link(language, letter)
+            issues_link = self._build_issue_link(str(language))
+            tests_link = self._build_test_link(language)
             body.append([language_link, tag_link, issues_link, tests_link, str(language.total_programs())])
         body.append(["**Totals**", "", "", "", str(total_snippets)])
         page.add_element(Table(header, body))
@@ -137,7 +132,7 @@ class Wiki:
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_programs() for language in languages_by_letter])
-            num_of_tests = sum([1 if language.has_test() else 0 for language in languages_by_letter])
+            num_of_tests = sum(1 for language in languages_by_letter if language.has_testinfo())
             body.append([letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests)])
         body.append([
             "**Totals**",
