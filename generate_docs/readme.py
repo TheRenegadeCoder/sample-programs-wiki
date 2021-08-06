@@ -29,14 +29,13 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     """
     list_items = list()
     for program in language.sample_programs():
-        readable_name = program.normalized_name.replace("-", " ").title()
-        program_name = f"{readable_name} in {language.get_readable_name()}"
+        program_name = f"{str(program)} in {language.name()}"
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
-            .insert_link(program_name, program.sample_program_doc_url) \
-            .insert_link("Requirements", program.sample_program_req_url)
-        if not program_line.verify_urls()[program.sample_program_doc_url]:
+            .insert_link(program_name, program.documentation_url()) \
+            .insert_link("Requirements", program.requirements_url())
+        if not program_line.verify_urls()[program.documentation_url()]:
             program_line.replace(":white_check_mark:", ":warning:") \
-                .replace_link(program.sample_program_doc_url, program.sample_program_issue_url)
+                .replace_link(program.documentation_url(), program.issue_query_url())
         list_items.append(program_line)
     return MDList(list_items)
 
@@ -75,7 +74,7 @@ class ReadMeCatalog:
         page = Document("README")
 
         # Introduction
-        page.add_header(f"Sample Programs in {language.get_readable_name()}")
+        page.add_header(f"Sample Programs in {language.name()}")
         page.add_element(_get_intro_text(language))
 
         # Sample Programs List
@@ -85,7 +84,7 @@ class ReadMeCatalog:
 
         # Testing
         page.add_header("Testing", level=2)
-        test_data = language.get_test_data()
+        test_data = language.testinfo()
         if not test_data:
             page.add_paragraph(
                 """
@@ -98,7 +97,7 @@ class ReadMeCatalog:
             page.add_paragraph(
                 f"""
                 The following list shares details about what we're using to test all Sample Programs in 
-                {language.get_readable_name()}.
+                {language.name()}.
                 """
             )
             page.add_unordered_list([
@@ -110,12 +109,12 @@ class ReadMeCatalog:
         page.add_horizontal_rule()
         page.add_element(_generate_credit())
 
-        self.pages[language.name] = page
+        self.pages[language.name()] = page
 
     def _build_readmes(self) -> None:
         """
         Generates all READMEs for the repo.
         :return: None
         """
-        for language in self.repo.languages:
+        for language in self.repo.language_collections():
             self._build_readme(language)
