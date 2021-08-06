@@ -14,12 +14,11 @@ setuptools.setup(
     url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
     packages=setuptools.find_packages(),
     install_requires=[
-        "PyYAML~=5.4.1",
         "feedparser~=6.0.6",
         "beautifulsoup4~=4.9.3",
         "requests~=2.25.1",
         "SnakeMD~=0.7.0",
-        "subete~=0.1.0"
+        "subete~=0.3.1"
     ],
     entry_points={
         "console_scripts": [

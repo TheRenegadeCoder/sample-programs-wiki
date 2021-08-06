@@ -15,7 +15,7 @@ class Generator:
 
     def __init__(self, source_dir):
         self.source_dir = source_dir
-        self.repo: Repo = Repo(self.source_dir)
+        self.repo: Repo = Repo(source_dir=self.source_dir)
 
     def generate_wiki(self) -> None:
         """

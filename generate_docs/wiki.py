@@ -136,14 +136,14 @@ class Wiki:
             letter_link = InlineText(letter.capitalize(), url=f"{self.wiki_url_base}{letter.capitalize()}")
             languages_by_letter = self.repo.get_languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
-            num_of_snippets = sum([language.total_snippets for language in languages_by_letter])
-            num_of_tests = sum([1 if language.test_file_path else 0 for language in languages_by_letter])
+            num_of_snippets = sum([language.total_programs() for language in languages_by_letter])
+            num_of_tests = sum([1 if language.has_test() else 0 for language in languages_by_letter])
             body.append([letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests)])
         body.append([
             "**Totals**",
-            str(len(self.repo.languages)),
-            str(self.repo.total_snippets),
-            str(self.repo.total_tests)
+            str(len(self.repo.language_collections())),
+            str(self.repo.total_programs()),
+            str(self.repo.total_tests())
         ])
         page.add_table(header, body)
         self.pages.append(page)
