@@ -29,7 +29,7 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     """
     list_items = list()
     for program in language.sample_programs().values():
-        program_name = f"{str(program)} in {language}"
+        program_name = f"{program}"
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
             .insert_link(program_name, program.documentation_url()) \
             .insert_link("Requirements", program.requirements_url())
