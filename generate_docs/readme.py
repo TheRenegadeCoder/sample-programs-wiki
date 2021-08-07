@@ -106,7 +106,7 @@ class ReadMeCatalog:
         page.add_horizontal_rule()
         page.add_element(_generate_credit())
 
-        self.pages[language._name] = page
+        self.pages[language.pathlike_name()] = page
 
     def _build_readmes(self) -> None:
         """

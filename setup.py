@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="generate_docs",
-    version="2.6.0",
+    version="2.6.1",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
     description="A docs generation package for the Sample Programs repo",
@@ -18,7 +18,7 @@ setuptools.setup(
         "beautifulsoup4~=4.9.3",
         "requests~=2.25.1",
         "SnakeMD~=0.7.0",
-        "subete~=0.4.1"
+        "subete~=0.5.1"
     ],
     entry_points={
         "console_scripts": [

@@ -1,3 +1,4 @@
+import logging
 import sys
 from typing import Optional
 
@@ -71,6 +72,7 @@ def main_how_to():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     main_wiki()
     main_readmes()
     main_how_to()
