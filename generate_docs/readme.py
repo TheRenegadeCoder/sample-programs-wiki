@@ -3,10 +3,10 @@ from subete import Repo, LanguageCollection
 
 
 def _get_intro_text(language: LanguageCollection) -> Paragraph:
-    paragraph = Paragraph([f"Welcome to Sample Programs in {language.get_readable_name()}! "])
-    text = InlineText("here.", url=language.sample_program_url)
+    paragraph = Paragraph([f"Welcome to Sample Programs in {language}! "])
+    text = InlineText("here.", url=language.lang_docs_url())
     if text.verify_url():
-        paragraph.add(f"To find documentation related to the {language.get_readable_name()} code in this repo, look ")
+        paragraph.add(f"To find documentation related to the {language} code in this repo, look ")
         paragraph.add(text)
     return paragraph
 
@@ -28,15 +28,14 @@ def _generate_program_list(language: LanguageCollection) -> MDList:
     :return: a list of sample programs list items
     """
     list_items = list()
-    for program in language.sample_programs:
-        readable_name = program.normalized_name.replace("-", " ").title()
-        program_name = f"{readable_name} in {language.get_readable_name()}"
+    for program in language.sample_programs().values():
+        program_name = f"{program}"
         program_line = Paragraph([f":white_check_mark: {program_name} [Requirements]"]) \
-            .insert_link(program_name, program.sample_program_doc_url) \
-            .insert_link("Requirements", program.sample_program_req_url)
-        if not program_line.verify_urls()[program.sample_program_doc_url]:
+            .insert_link(program_name, program.documentation_url()) \
+            .insert_link("Requirements", program.requirements_url())
+        if not program_line.verify_urls()[program.documentation_url()]:
             program_line.replace(":white_check_mark:", ":warning:") \
-                .replace_link(program.sample_program_doc_url, program.sample_program_issue_url)
+                .replace_link(program.documentation_url(), program.article_issue_query_url())
         list_items.append(program_line)
     return MDList(list_items)
 
@@ -75,7 +74,7 @@ class ReadMeCatalog:
         page = Document("README")
 
         # Introduction
-        page.add_header(f"Sample Programs in {language.get_readable_name()}")
+        page.add_header(f"Sample Programs in {language}")
         page.add_element(_get_intro_text(language))
 
         # Sample Programs List
@@ -85,7 +84,7 @@ class ReadMeCatalog:
 
         # Testing
         page.add_header("Testing", level=2)
-        test_data = language.get_test_data()
+        test_data = language.testinfo()
         if not test_data:
             page.add_paragraph(
                 """
@@ -96,10 +95,7 @@ class ReadMeCatalog:
             page.add_code("folder:\n  extension:\n  naming:\n\ncontainer:\n  image:\n  tag:\n  cmd:", lang="yml")
         else:
             page.add_paragraph(
-                f"""
-                The following list shares details about what we're using to test all Sample Programs in 
-                {language.get_readable_name()}.
-                """
+                f"The following list shares details about what we're using to test all Sample Programs in {language}."
             )
             page.add_unordered_list([
                 f"Docker Image: {test_data['container']['image']}",
@@ -110,12 +106,12 @@ class ReadMeCatalog:
         page.add_horizontal_rule()
         page.add_element(_generate_credit())
 
-        self.pages[language.name] = page
+        self.pages[language.pathlike_name()] = page
 
     def _build_readmes(self) -> None:
         """
         Generates all READMEs for the repo.
         :return: None
         """
-        for language in self.repo.languages:
+        for _, language in self.repo.language_collections().items():
             self._build_readme(language)

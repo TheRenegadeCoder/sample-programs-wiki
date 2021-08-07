@@ -1,3 +1,4 @@
+import logging
 import sys
 from typing import Optional
 
@@ -15,7 +16,7 @@ class Generator:
 
     def __init__(self, source_dir):
         self.source_dir = source_dir
-        self.repo: Repo = Repo(self.source_dir)
+        self.repo: Repo = Repo(source_dir=self.source_dir)
 
     def generate_wiki(self) -> None:
         """
@@ -71,6 +72,7 @@ def main_how_to():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     main_wiki()
     main_readmes()
     main_how_to()
