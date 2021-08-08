@@ -85,7 +85,7 @@ class Wiki:
         )
         header = ["Language", "Article(s)", "Issue(s)", "Test(s)", "# of Snippets"]
         body = []
-        languages_by_letter = self.repo.get_languages_by_letter(letter)
+        languages_by_letter = self.repo.languages_by_letter(letter)
         total_snippets = 0
         for language in languages_by_letter:
             total_snippets += language.total_programs()
@@ -104,7 +104,7 @@ class Wiki:
 
         :return: None
         """
-        alphabetical_list = self.repo.get_sorted_language_letters()
+        alphabetical_list = self.repo.sorted_language_letters()
         for index, letter in enumerate(alphabetical_list):
             page = self._build_alphabet_page(letter)
             previous_index = index - 1
@@ -124,12 +124,12 @@ class Wiki:
         :return: None
         """
         page = Document("Alphabetical Language Catalog")
-        alphabetical_list = self.repo.get_sorted_language_letters()
+        alphabetical_list = self.repo.sorted_language_letters()
         header = ["Collection", "# of Languages", "# of Snippets", "# of Tests"]
         body = []
         for letter in alphabetical_list:
             letter_link = InlineText(letter.capitalize(), url=f"{self.wiki_url_base}{letter.capitalize()}")
-            languages_by_letter = self.repo.get_languages_by_letter(letter)
+            languages_by_letter = self.repo.languages_by_letter(letter)
             num_of_languages = len(languages_by_letter)
             num_of_snippets = sum([language.total_programs() for language in languages_by_letter])
             num_of_tests = sum(1 for language in languages_by_letter if language.has_testinfo())
