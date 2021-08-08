@@ -4,9 +4,8 @@ from typing import Optional
 
 from subete import Repo
 
-from generate_docs.how_to import HowTo
-from generate_docs.readme import ReadMeCatalog
-from generate_docs.wiki import Wiki
+from readme import ReadMeCatalog
+from wiki import Wiki
 
 
 class Generator:
@@ -66,13 +65,7 @@ def main_readmes():
     _create_generator().generate_readmes()
 
 
-def main_how_to():
-    how_to = HowTo()
-    how_to.page.output_page("")
-
-
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     main_wiki()
     main_readmes()
-    main_how_to()
