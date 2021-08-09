@@ -4,24 +4,22 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="generate_docs",
-    version="2.6.1",
+    name="jisho",
+    version="0.1.0",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
-    description="A docs generation package for the Sample Programs repo",
+    description="A wiki generation package for the Sample Programs repo",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
     packages=setuptools.find_packages(),
     install_requires=[
-        "SnakeMD~=0.7.0",
-        "subete~=0.5.1"
+        "SnakeMD>=0.7",
+        "subete>=0.6"
     ],
     entry_points={
         "console_scripts": [
-            'wikig = generate_docs.generator:main_wiki',
-            'wikir = generate_docs.generator:main_readmes',
-            'wikih = generate_docs.generator:main_how_to'
+            'jisho = jisho.wiki:main'
         ],
     },
     classifiers=(
