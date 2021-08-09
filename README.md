@@ -15,11 +15,9 @@ generate various documentation pages in Markdown.
 
 ## What is Automated
 
-Currently, the script does two things:
+Currently, the script maintains our entire [Sample Programs wiki](https://github.com/TheRenegadeCoder/sample-programs/wiki).
 
-- It maintains our entire [Sample Programs wiki](https://github.com/TheRenegadeCoder/sample-programs/wiki)
-
-In terms of wiki automation, it generates 27 pages: 1 alphabet catalog and 26 alphabet pages.
+During wiki automation, it generates 27 pages: 1 alphabet catalog and 26 alphabet pages.
 
 The alphabet catalog contains a table with links to each alphabet page as well as 
 metadata like the number of scripts and languages per letter. In addition, the 
