@@ -14,9 +14,6 @@ setuptools.setup(
     url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
     packages=setuptools.find_packages(),
     install_requires=[
-        "feedparser~=6.0.6",
-        "beautifulsoup4~=4.9.3",
-        "requests~=2.25.1",
         "SnakeMD~=0.7.0",
         "subete~=0.5.1"
     ],
@@ -29,7 +26,6 @@ setuptools.setup(
     },
     classifiers=(
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ),
 )
