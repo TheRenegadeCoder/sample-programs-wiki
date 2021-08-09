@@ -1,5 +1,27 @@
+import argparse
+import logging
+
 from snakemd import Document, InlineText, Paragraph, Table
-from subete import Repo, LanguageCollection
+from subete import LanguageCollection, Repo
+
+
+class Generator:
+    """
+    The top-level class used to generate wiki objects.
+    """
+
+    def __init__(self, source_dir):
+        self.source_dir = source_dir
+        self.repo: Repo = Repo(source_dir=self.source_dir)
+
+    def generate_wiki(self) -> None:
+        """
+        Builds and outputs the wiki.
+        :return: None
+        """
+        wiki = Wiki(self.repo)
+        for page in wiki.pages:
+            page.output_page("wiki")
 
 
 class Wiki:
@@ -142,3 +164,42 @@ class Wiki:
         ])
         page.add_table(header, body)
         self.pages.append(page)
+
+
+def main():
+    """
+    Builds the wiki.
+    :return: None
+    """
+    args = _get_args()
+    numeric_level = getattr(logging, args[1].upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f'Invalid log level: {args[1]}')
+    logging.basicConfig(level=numeric_level)
+    generator = Generator(args[0])
+    generator.generate_wiki()
+
+
+def _get_args() -> tuple:
+    """
+    A helper function which gets the log level from 
+    the command line. Set as warning from default. 
+    :return: the log level provided by the user
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path")
+    parser.add_argument(
+        "-log",
+        "--log",
+        default="warning",
+        help=(
+            "Provide logging level. "
+            "Example --log debug', default='warning'"
+        ),
+    )
+    options = parser.parse_args()
+    return options.path, options.log
+
+
+if __name__ == '__main__':
+    main()
