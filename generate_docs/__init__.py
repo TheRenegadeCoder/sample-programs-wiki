@@ -1,1 +1,1 @@
-name = "generate_docs"
+from .wiki import *
