@@ -11,7 +11,7 @@ setuptools.setup(
     description="A wiki generation package for the Sample Programs repo",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/TheRenegadeCoder/sample-programs-docs-generator",
+    url="https://github.com/TheRenegadeCoder/sample-programs-wiki",
     packages=setuptools.find_packages(),
     install_requires=[
         "SnakeMD>=0.7",
