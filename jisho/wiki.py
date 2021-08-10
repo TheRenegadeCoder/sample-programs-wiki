@@ -111,9 +111,9 @@ class Wiki:
         total_snippets = 0
         for language in languages_by_letter:
             total_snippets += language.total_programs()
-            language_link = self._build_repo_link(str(language), letter, str(language))
+            language_link = self._build_repo_link(str(language), letter, language.pathlike_name())
             tag_link = self._build_language_link(language)
-            issues_link = self._build_issue_link(str(language))
+            issues_link = self._build_issue_link(language.pathlike_name())
             tests_link = self._build_test_link(language)
             body.append([language_link, tag_link, issues_link, tests_link, str(language.total_programs())])
         body.append(["**Totals**", "", "", "", str(total_snippets)])

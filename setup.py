@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="jisho",
-    version="0.1.0",
+    version="0.1.1",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
     description="A wiki generation package for the Sample Programs repo",
