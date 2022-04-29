@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="jisho",
-    version="0.1.1",
+    version="0.1.2",
     author="The Renegade Coder",
     author_email="jeremy.grifski@therenegadecoder.com",
     description="A wiki generation package for the Sample Programs repo",
@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         "SnakeMD>=0.7",
-        "subete>=0.6"
+        "subete>=0.9"
     ],
     entry_points={
         "console_scripts": [
