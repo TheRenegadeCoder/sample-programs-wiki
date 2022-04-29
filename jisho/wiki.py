@@ -158,7 +158,7 @@ class Wiki:
             body.append([letter_link, str(num_of_languages), str(num_of_snippets), str(num_of_tests)])
         body.append([
             "**Totals**",
-            str(len(self.repo.language_collections())),
+            str(len(list(self.repo))),
             str(self.repo.total_programs()),
             str(self.repo.total_tests())
         ])
